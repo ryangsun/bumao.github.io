@@ -1,8 +1,10 @@
 ---
 title: 当mysql遇到ssl
 date: 2021-05-17 15:19:11
-tags: mysql,java
-categories: 未解之谜
+tags: [mysql,java]
+categories: [未解之谜]
+keywords: KeyCastOW 录屏技巧 按键显示
+comments: true
 ---
 SpringBoot 连接提示 Communications link failure
 ```
