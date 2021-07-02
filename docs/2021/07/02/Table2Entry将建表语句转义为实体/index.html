@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Table2Entry将建表语句转义为实体 | 布猫</title>
+  <meta name="author" content="Ryan.G.Sun">
+  
+  <meta name="description" content="Table2Entry可以方便的将mysql建表语句转化为实体对象，进而帮助你快速映射实体。
+Table2Entry源码地址
+https://github.com/ryangsun/table2entry
+
+包引用正常使用12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Table2Entry将建表语句转义为实体"/>
+  <meta property="og:site_name" content="布猫"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <!--<h1><a href="/">布猫</a></h1>-->
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px"/></a></h1>
+  <h2><a href="/">bumao.com</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">归档</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-Table2Entry将建表语句转义为实体" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-02T07:19:11.000Z"><a href="/2021/07/02/Table2Entry%E5%B0%86%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5%E8%BD%AC%E4%B9%89%E4%B8%BA%E5%AE%9E%E4%BD%93/">2021-07-02</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Table2Entry将建表语句转义为实体</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>Table2Entry可以方便的将mysql建表语句转化为实体对象，进而帮助你快速映射实体。</p>
+<h2 id="Table2Entry源码地址"><a href="#Table2Entry源码地址" class="headerlink" title="Table2Entry源码地址"></a>Table2Entry源码地址</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/ryangsun/table2entry">https://github.com/ryangsun/table2entry</a></li>
+</ul>
+<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><h3 id="正常使用"><a href="#正常使用" class="headerlink" title="正常使用"></a>正常使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.model&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;table2entry&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="包冲突的处理"><a href="#包冲突的处理" class="headerlink" title="包冲突的处理"></a>包冲突的处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.model&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;table2entry&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;!--druid--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">        &lt;!--lombok--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">        &lt;!--slf4j-api--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">    &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Table2Entry的使用"><a href="#Table2Entry的使用" class="headerlink" title="Table2Entry的使用"></a>Table2Entry的使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">String sql = &quot;CREATE TABLE `card` (\n&quot; +</span><br><span class="line">        &quot;  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;PK&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `batch_id` int(11) NOT NULL COMMENT &#x27;所属批次ID&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `denomination` decimal(10,2) NOT NULL DEFAULT &#x27;0.00&#x27; COMMENT &#x27;面额&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `card_no` varchar(20) NOT NULL COMMENT &#x27;实体卡号&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `card_pass` varchar(20) NOT NULL COMMENT &#x27;实体密码&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `status` tinyint(3) unsigned NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;状态，0=未核销 1=已核销&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_time` datetime DEFAULT NULL COMMENT &#x27;核销核销时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_userid` varchar(32) DEFAULT NULL COMMENT &#x27;核销用户ID&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_mobile` varchar(20) DEFAULT NULL COMMENT &#x27;核销时用户的手机号码&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#x27;创建时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `stop_time` datetime NOT NULL COMMENT &#x27;结束核销时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_openid` varchar(64) DEFAULT NULL COMMENT &#x27;用户openid&#x27;,\n&quot; +</span><br><span class="line">        &quot;  PRIMARY KEY (`id`) USING BTREE,\n&quot; +</span><br><span class="line">        &quot;  KEY `batch_id` (`batch_id`) USING BTREE,\n&quot; +</span><br><span class="line">        &quot;  KEY `status` (`status`) USING BTREE\n&quot; +</span><br><span class="line">        &quot;) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;卡券批次表&#x27;;&quot; +</span><br><span class="line">        &quot;select * from card;&quot;;</span><br><span class="line">ToEntry toEntry = new ToEntry();</span><br><span class="line">List&lt;TableEntryVo&gt; tableEntryVos = toEntry.getEntry(sql);</span><br><span class="line">log.info(&quot;tableEntryVos=&#123;&#125;&quot;, JSONArray.toJSON(tableEntryVos));</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可同时转义多条建表语句，请用“;”隔开。</li>
+<li>会忽略建表语句以外的sql。</li>
+</ul>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p><del>针对Mysql建表语句的转义</del></p>
+<p>针对Oracle建表语句的转义</p>
+<p>针对MsSQL建表语句的转义</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Table2Entry/">Table2Entry</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/java/">java</a>, <a href="/tags/Table2Entry/">Table2Entry</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+    
+    
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="as_sitesearch" value="ryangsun.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/categories/%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C/">未解之谜</a><small>1</small></li>
+  
+    <li><a href="/categories/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/tags/java/">java</a><small>3</small></li>
+  
+    <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 Ryan.G.Sun
+  
+  @
+  <a target="_blank" rel="noopener" href="https://bumao.com">bumao.com</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
