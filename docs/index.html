@@ -66,9 +66,186 @@
 <h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/ryangsun/yuque-java-sdk">https://github.com/ryangsun/yuque-java-sdk</a></li>
 </ul>
-<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.models.yuquesdk&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;yuquesdk&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
+    &lt;groupId&gt;com.bumao.models.yuquesdk&lt;&#x2F;groupId&gt;
+    &lt;artifactId&gt;yuquesdk&lt;&#x2F;artifactId&gt;
+    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
+&lt;&#x2F;dependency&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line">YuqueClient client = new YuqueClient(&quot;yuque-token&quot;);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某个用户信息 by Id--&quot;);</span><br><span class="line">UserDetailSerializer userDetailSerializer = client.getUserInfoById(&quot;1757692&quot;);</span><br><span class="line">System.out.println(userDetailSerializer);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某个用户信息 by Login--&quot;);</span><br><span class="line">UserDetailSerializer user1 = client.getUserInfoByLogin(&quot;zhangxin_ux&quot;);</span><br><span class="line">System.out.println(user1);</span><br><span class="line">System.out.println(JSONObject.toJSONString(user1) );</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取当前用户信息--&quot;);</span><br><span class="line">UserDetailSerializer user2 = client.getCurrUserInfo();</span><br><span class="line">System.out.println(user2);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某个用户的加入的组织列表 by Id--&quot;);</span><br><span class="line">List&lt;GroupSerializer&gt; groupList = client.listJoinedGroupById(&quot;1757692&quot;);</span><br><span class="line">System.out.println(groupList);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某个用户的加入的组织列表 by Login--&quot;);</span><br><span class="line">List&lt;GroupSerializer&gt; groupList1 = client.listJoinedGroupByLogin(&quot;u1486894&quot;);</span><br><span class="line">System.out.println(groupList1);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取公开组织列表--&quot;);</span><br><span class="line">List&lt;GroupSerializer&gt; groupList3 = client.listPublicGroup();</span><br><span class="line">System.out.println(groupList3);</span><br><span class="line">System.out.println(groupList3.size());</span><br><span class="line"></span><br><span class="line">List&lt;GroupSerializer&gt; groupList2 = client.listPublicGroup(99);</span><br><span class="line">System.out.println(groupList2);</span><br><span class="line">System.out.println(groupList2.size());</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取单个组织的详细信息--&quot;);</span><br><span class="line">GroupDetailVo groupDetailVo = client.getGroupInfoById(&quot;antv&quot;);</span><br><span class="line">System.out.println(groupDetailVo.getData());</span><br><span class="line">System.out.println(groupDetailVo.getAbilities());</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--创建组织--&quot;);</span><br><span class="line">GroupCreatePo createPo = new GroupCreatePo();</span><br><span class="line">createPo.setName(&quot;firstGroup1&quot;);</span><br><span class="line">createPo.setLogin(&quot;firstGroup2&quot;);</span><br><span class="line">createPo.setDescription(&quot;firstGroup&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    GroupSerializer newGroup = client.createGroup(createPo);</span><br><span class="line">    System.out.println(newGroup);</span><br><span class="line">&#125;catch (YuqueException e)&#123;</span><br><span class="line">    System.out.println(e);</span><br><span class="line">    System.out.println(&quot;创建组织错误：httpCode=&quot;+e.getHttpCode()+&quot;,code=&quot;+e.getOrigCode()+&quot;,message=&quot;+e.getOrigMsg());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--更新组织--&quot;);</span><br><span class="line">GroupCreatePo updatePo = new GroupCreatePo();</span><br><span class="line">updatePo.setName(&quot;first被更新&quot;);</span><br><span class="line">updatePo.setLogin(&quot;firstGroup2&quot;);</span><br><span class="line">updatePo.setDescription(&quot;1234567890&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    GroupSerializer newGroup = client.updateGroupById(&quot;21807875&quot;,updatePo);</span><br><span class="line">    System.out.println(newGroup);</span><br><span class="line">&#125;catch (YuqueException e)&#123;</span><br><span class="line">    System.out.println(e);</span><br><span class="line">    if(e.getHttpCode().equals(400)) &#123;</span><br><span class="line">System.out.println(&quot;更新组织错误：httpCode=&quot; + e.getHttpCode() + &quot;,code=&quot; + e.getOrigCode() + &quot;,message=&quot; + e.getOrigMsg());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--删除组织--&quot;);</span><br><span class="line">try &#123;</span><br><span class="line">    client.deleteGroupById(&quot;21807875&quot;);</span><br><span class="line">&#125;catch (YuqueException e)&#123;</span><br><span class="line">    System.out.println(e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取组织成员信息--&quot;);</span><br><span class="line">List&lt;GroupUserSerializer&gt; groupUserSerializerList = client.listGroupUserById(&quot;firstGroup&quot;);</span><br><span class="line">System.out.println(groupUserSerializerList);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--增加或更新组织成员--&quot;);</span><br><span class="line">GroupUserSerializer UpgroupUserSerializer = client.updateGroupUserbyId(&quot;firstGroup&quot;,&quot;zhangxin_ux&quot;,1);</span><br><span class="line">System.out.println(UpgroupUserSerializer);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--删除组织成员--&quot;);</span><br><span class="line">GroupUserSerializer DelgroupUserSerializer = client.deleteGroupUserbyId(&quot;firstGroup&quot;,&quot;zhangxin_ux&quot;);</span><br><span class="line">System.out.println(DelgroupUserSerializer);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某个用户的知识库列表 by Id--&quot;);</span><br><span class="line">List&lt;BookSerializer&gt; bookSerializerList = client.listUserReposById(&quot;u1486894&quot;,&quot;all&quot;,0);</span><br><span class="line">System.out.println(bookSerializerList);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某个团队的知识库列表 by Id--&quot;);</span><br><span class="line">List&lt;BookSerializer&gt; groupbookSerializerList = client.listGroupReposById(&quot;firstgroup&quot;,&quot;all&quot;,0);</span><br><span class="line">System.out.println(groupbookSerializerList);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--往团队创建知识库 by Id--&quot;);</span><br><span class="line">RepoCreatePo createPo = new RepoCreatePo();</span><br><span class="line">createPo.setDescription(&quot;介绍&quot;);</span><br><span class="line">createPo.setName(&quot;名称&quot;);</span><br><span class="line">createPo.setPublic_id(1);</span><br><span class="line">createPo.setSlug(&quot;abc&quot;);</span><br><span class="line">createPo.setType(&quot;Book&quot;);</span><br><span class="line">BookSerializer bookSerializer = client.createGroupRepoById(&quot;firstgroup&quot;,createPo);</span><br><span class="line">System.out.println(bookSerializer);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--往自己下面创建知识库 by Id--&quot;);</span><br><span class="line">RepoCreatePo cPo = new RepoCreatePo();</span><br><span class="line">cPo.setDescription(&quot;介绍&quot;);</span><br><span class="line">cPo.setName(&quot;名称&quot;);</span><br><span class="line">cPo.setPublic_id(1);</span><br><span class="line">cPo.setSlug(&quot;abc&quot;);</span><br><span class="line">cPo.setType(&quot;Book&quot;);</span><br><span class="line">BookSerializer bookSerializer = client.createUserRepoById(&quot;u1486894&quot;,cPo);</span><br><span class="line">System.out.println(bookSerializer);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取知识库详情 by Id--&quot;);</span><br><span class="line">BookDetailVo bookDetailVo = client.getRepoDetailById(&quot;20113349&quot;);</span><br><span class="line">System.out.println(bookDetailVo.getData());//repo</span><br><span class="line">System.out.println(bookDetailVo.getAbilities());//Abilities</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--更新知识库信息 by repoId--&quot;);</span><br><span class="line">RepoCreatePo upPo = new RepoCreatePo();</span><br><span class="line">upPo.setDescription(&quot;介绍&quot;);</span><br><span class="line">upPo.setName(&quot;名称&quot;);</span><br><span class="line">upPo.setPublic_id(0);</span><br><span class="line">upPo.setSlug(&quot;abc&quot;);</span><br><span class="line">upPo.setType(&quot;Book&quot;);</span><br><span class="line">BookSerializer bookSerializerUp = client.updateRepoById(&quot;20167466&quot;,upPo);</span><br><span class="line">System.out.println(bookSerializerUp);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--删除知识库 by repoId--&quot;);</span><br><span class="line">BookSerializer bookSerializerDel = client.deleteRepoById(&quot;u1486894/slug&quot;);</span><br><span class="line">System.out.println(bookSerializerDel);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取某仓库的目录 by nameSpace--&quot;);</span><br><span class="line">List&lt;TocSerializer&gt; tocSerializerList = client.listTocByNameSpace(&quot;u1486894/nn3k9e&quot;);</span><br><span class="line">System.out.println(tocSerializerList);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取一个仓库的文档列表 by nameSpace--&quot;);</span><br><span class="line">List&lt;DocSerializer&gt; docSerializerList = client.listDocByNameSpace(&quot;20113349&quot;);</span><br><span class="line">System.out.println(docSerializerList);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--获取单篇文档的详细信息 by slug--&quot;);</span><br><span class="line">DocDetailVo docDetailVo = client.getDocDetailBySlug(&quot;u1486894/nn3k9e&quot;,&quot;hgg9lg&quot;);</span><br><span class="line">System.out.println(docDetailVo.getData());//文章</span><br><span class="line">System.out.println(docDetailVo.getAbilities());//Abilities</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--创建文档 by nameSpace--&quot;);</span><br><span class="line">DocCreatePo createPo = new DocCreatePo();</span><br><span class="line">createPo.setTitle(&quot;helloword&quot;);</span><br><span class="line">createPo.setSlug(&quot;helloword1&quot;);</span><br><span class="line">createPo.setPublic_id(1);</span><br><span class="line">createPo.setFormat(&quot;markdown&quot;);</span><br><span class="line">createPo.setBody(&quot;#helloword&quot;);</span><br><span class="line">DocSerializer docSerializerCreate = client.createDocByNameSpace(&quot;u1486894/nn3k9e&quot;,createPo);</span><br><span class="line">System.out.println(docSerializerCreate);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--更新文档 by nameSpace--&quot;);</span><br><span class="line">DocCreatePo upPo = new DocCreatePo();</span><br><span class="line">upPo.setTitle(&quot;helloword&quot;);</span><br><span class="line">upPo.setSlug(&quot;helloword1&quot;);</span><br><span class="line">upPo.setPublic_id(1);</span><br><span class="line">upPo.setFormat(&quot;markdown&quot;);</span><br><span class="line">upPo.setBody(&quot;# helloword11111111&quot;);</span><br><span class="line">DocSerializer docSerializerUp = client.updateDocByNameSpace(&quot;u1486894/nn3k9e&quot;,&quot;46939700&quot;,upPo);</span><br><span class="line">System.out.println(docSerializerUp);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--删除文档 by repoId--&quot;);</span><br><span class="line">DocSerializer docSerializerDel = client.deleteDocByRepoId(&quot;20113349&quot;,&quot;46939326&quot;);</span><br><span class="line">System.out.println(docSerializerDel);</span><br><span class="line"></span><br><span class="line">System.out.println(&quot;--搜索--&quot;);</span><br><span class="line">SearchPo searchPo = new SearchPo();</span><br><span class="line">searchPo.setType(&quot;doc&quot;);</span><br><span class="line">searchPo.setQ(&quot;世界上最好的语言&quot;);</span><br><span class="line">JSONObject obj = client.listSearch(searchPo);</span><br><span class="line">System.out.println(obj);</span><br></pre></td></tr></table></figure>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><pre class="line-numbers language-none"><code class="language-none">YuqueClient client &#x3D; new YuqueClient(&quot;yuque-token&quot;);
+
+System.out.println(&quot;--获取某个用户信息 by Id--&quot;);
+UserDetailSerializer userDetailSerializer &#x3D; client.getUserInfoById(&quot;1757692&quot;);
+System.out.println(userDetailSerializer);
+
+System.out.println(&quot;--获取某个用户信息 by Login--&quot;);
+UserDetailSerializer user1 &#x3D; client.getUserInfoByLogin(&quot;zhangxin_ux&quot;);
+System.out.println(user1);
+System.out.println(JSONObject.toJSONString(user1) );
+
+System.out.println(&quot;--获取当前用户信息--&quot;);
+UserDetailSerializer user2 &#x3D; client.getCurrUserInfo();
+System.out.println(user2);
+
+System.out.println(&quot;--获取某个用户的加入的组织列表 by Id--&quot;);
+List&lt;GroupSerializer&gt; groupList &#x3D; client.listJoinedGroupById(&quot;1757692&quot;);
+System.out.println(groupList);
+
+System.out.println(&quot;--获取某个用户的加入的组织列表 by Login--&quot;);
+List&lt;GroupSerializer&gt; groupList1 &#x3D; client.listJoinedGroupByLogin(&quot;u1486894&quot;);
+System.out.println(groupList1);
+
+System.out.println(&quot;--获取公开组织列表--&quot;);
+List&lt;GroupSerializer&gt; groupList3 &#x3D; client.listPublicGroup();
+System.out.println(groupList3);
+System.out.println(groupList3.size());
+
+List&lt;GroupSerializer&gt; groupList2 &#x3D; client.listPublicGroup(99);
+System.out.println(groupList2);
+System.out.println(groupList2.size());
+
+System.out.println(&quot;--获取单个组织的详细信息--&quot;);
+GroupDetailVo groupDetailVo &#x3D; client.getGroupInfoById(&quot;antv&quot;);
+System.out.println(groupDetailVo.getData());
+System.out.println(groupDetailVo.getAbilities());
+
+System.out.println(&quot;--创建组织--&quot;);
+GroupCreatePo createPo &#x3D; new GroupCreatePo();
+createPo.setName(&quot;firstGroup1&quot;);
+createPo.setLogin(&quot;firstGroup2&quot;);
+createPo.setDescription(&quot;firstGroup&quot;);
+try &#123;
+    GroupSerializer newGroup &#x3D; client.createGroup(createPo);
+    System.out.println(newGroup);
+&#125;catch (YuqueException e)&#123;
+    System.out.println(e);
+    System.out.println(&quot;创建组织错误：httpCode&#x3D;&quot;+e.getHttpCode()+&quot;,code&#x3D;&quot;+e.getOrigCode()+&quot;,message&#x3D;&quot;+e.getOrigMsg());
+&#125;
+
+System.out.println(&quot;--更新组织--&quot;);
+GroupCreatePo updatePo &#x3D; new GroupCreatePo();
+updatePo.setName(&quot;first被更新&quot;);
+updatePo.setLogin(&quot;firstGroup2&quot;);
+updatePo.setDescription(&quot;1234567890&quot;);
+try &#123;
+    GroupSerializer newGroup &#x3D; client.updateGroupById(&quot;21807875&quot;,updatePo);
+    System.out.println(newGroup);
+&#125;catch (YuqueException e)&#123;
+    System.out.println(e);
+    if(e.getHttpCode().equals(400)) &#123;
+System.out.println(&quot;更新组织错误：httpCode&#x3D;&quot; + e.getHttpCode() + &quot;,code&#x3D;&quot; + e.getOrigCode() + &quot;,message&#x3D;&quot; + e.getOrigMsg());
+    &#125;
+&#125;
+
+System.out.println(&quot;--删除组织--&quot;);
+try &#123;
+    client.deleteGroupById(&quot;21807875&quot;);
+&#125;catch (YuqueException e)&#123;
+    System.out.println(e);
+&#125;
+
+System.out.println(&quot;--获取组织成员信息--&quot;);
+List&lt;GroupUserSerializer&gt; groupUserSerializerList &#x3D; client.listGroupUserById(&quot;firstGroup&quot;);
+System.out.println(groupUserSerializerList);
+
+System.out.println(&quot;--增加或更新组织成员--&quot;);
+GroupUserSerializer UpgroupUserSerializer &#x3D; client.updateGroupUserbyId(&quot;firstGroup&quot;,&quot;zhangxin_ux&quot;,1);
+System.out.println(UpgroupUserSerializer);
+
+System.out.println(&quot;--删除组织成员--&quot;);
+GroupUserSerializer DelgroupUserSerializer &#x3D; client.deleteGroupUserbyId(&quot;firstGroup&quot;,&quot;zhangxin_ux&quot;);
+System.out.println(DelgroupUserSerializer);
+
+System.out.println(&quot;--获取某个用户的知识库列表 by Id--&quot;);
+List&lt;BookSerializer&gt; bookSerializerList &#x3D; client.listUserReposById(&quot;u1486894&quot;,&quot;all&quot;,0);
+System.out.println(bookSerializerList);
+
+System.out.println(&quot;--获取某个团队的知识库列表 by Id--&quot;);
+List&lt;BookSerializer&gt; groupbookSerializerList &#x3D; client.listGroupReposById(&quot;firstgroup&quot;,&quot;all&quot;,0);
+System.out.println(groupbookSerializerList);
+
+System.out.println(&quot;--往团队创建知识库 by Id--&quot;);
+RepoCreatePo createPo &#x3D; new RepoCreatePo();
+createPo.setDescription(&quot;介绍&quot;);
+createPo.setName(&quot;名称&quot;);
+createPo.setPublic_id(1);
+createPo.setSlug(&quot;abc&quot;);
+createPo.setType(&quot;Book&quot;);
+BookSerializer bookSerializer &#x3D; client.createGroupRepoById(&quot;firstgroup&quot;,createPo);
+System.out.println(bookSerializer);
+
+System.out.println(&quot;--往自己下面创建知识库 by Id--&quot;);
+RepoCreatePo cPo &#x3D; new RepoCreatePo();
+cPo.setDescription(&quot;介绍&quot;);
+cPo.setName(&quot;名称&quot;);
+cPo.setPublic_id(1);
+cPo.setSlug(&quot;abc&quot;);
+cPo.setType(&quot;Book&quot;);
+BookSerializer bookSerializer &#x3D; client.createUserRepoById(&quot;u1486894&quot;,cPo);
+System.out.println(bookSerializer);
+
+System.out.println(&quot;--获取知识库详情 by Id--&quot;);
+BookDetailVo bookDetailVo &#x3D; client.getRepoDetailById(&quot;20113349&quot;);
+System.out.println(bookDetailVo.getData());&#x2F;&#x2F;repo
+System.out.println(bookDetailVo.getAbilities());&#x2F;&#x2F;Abilities
+
+System.out.println(&quot;--更新知识库信息 by repoId--&quot;);
+RepoCreatePo upPo &#x3D; new RepoCreatePo();
+upPo.setDescription(&quot;介绍&quot;);
+upPo.setName(&quot;名称&quot;);
+upPo.setPublic_id(0);
+upPo.setSlug(&quot;abc&quot;);
+upPo.setType(&quot;Book&quot;);
+BookSerializer bookSerializerUp &#x3D; client.updateRepoById(&quot;20167466&quot;,upPo);
+System.out.println(bookSerializerUp);
+
+System.out.println(&quot;--删除知识库 by repoId--&quot;);
+BookSerializer bookSerializerDel &#x3D; client.deleteRepoById(&quot;u1486894&#x2F;slug&quot;);
+System.out.println(bookSerializerDel);
+
+System.out.println(&quot;--获取某仓库的目录 by nameSpace--&quot;);
+List&lt;TocSerializer&gt; tocSerializerList &#x3D; client.listTocByNameSpace(&quot;u1486894&#x2F;nn3k9e&quot;);
+System.out.println(tocSerializerList);
+
+System.out.println(&quot;--获取一个仓库的文档列表 by nameSpace--&quot;);
+List&lt;DocSerializer&gt; docSerializerList &#x3D; client.listDocByNameSpace(&quot;20113349&quot;);
+System.out.println(docSerializerList);
+
+System.out.println(&quot;--获取单篇文档的详细信息 by slug--&quot;);
+DocDetailVo docDetailVo &#x3D; client.getDocDetailBySlug(&quot;u1486894&#x2F;nn3k9e&quot;,&quot;hgg9lg&quot;);
+System.out.println(docDetailVo.getData());&#x2F;&#x2F;文章
+System.out.println(docDetailVo.getAbilities());&#x2F;&#x2F;Abilities
+
+System.out.println(&quot;--创建文档 by nameSpace--&quot;);
+DocCreatePo createPo &#x3D; new DocCreatePo();
+createPo.setTitle(&quot;helloword&quot;);
+createPo.setSlug(&quot;helloword1&quot;);
+createPo.setPublic_id(1);
+createPo.setFormat(&quot;markdown&quot;);
+createPo.setBody(&quot;#helloword&quot;);
+DocSerializer docSerializerCreate &#x3D; client.createDocByNameSpace(&quot;u1486894&#x2F;nn3k9e&quot;,createPo);
+System.out.println(docSerializerCreate);
+
+System.out.println(&quot;--更新文档 by nameSpace--&quot;);
+DocCreatePo upPo &#x3D; new DocCreatePo();
+upPo.setTitle(&quot;helloword&quot;);
+upPo.setSlug(&quot;helloword1&quot;);
+upPo.setPublic_id(1);
+upPo.setFormat(&quot;markdown&quot;);
+upPo.setBody(&quot;# helloword11111111&quot;);
+DocSerializer docSerializerUp &#x3D; client.updateDocByNameSpace(&quot;u1486894&#x2F;nn3k9e&quot;,&quot;46939700&quot;,upPo);
+System.out.println(docSerializerUp);
+
+System.out.println(&quot;--删除文档 by repoId--&quot;);
+DocSerializer docSerializerDel &#x3D; client.deleteDocByRepoId(&quot;20113349&quot;,&quot;46939326&quot;);
+System.out.println(docSerializerDel);
+
+System.out.println(&quot;--搜索--&quot;);
+SearchPo searchPo &#x3D; new SearchPo();
+searchPo.setType(&quot;doc&quot;);
+searchPo.setQ(&quot;世界上最好的语言&quot;);
+JSONObject obj &#x3D; client.listSearch(searchPo);
+System.out.println(obj);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
       
     </div>
     <footer>
@@ -104,10 +281,56 @@
 <h2 id="Table2Entry源码地址"><a href="#Table2Entry源码地址" class="headerlink" title="Table2Entry源码地址"></a>Table2Entry源码地址</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/ryangsun/table2entry">https://github.com/ryangsun/table2entry</a></li>
 </ul>
-<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><h3 id="正常使用"><a href="#正常使用" class="headerlink" title="正常使用"></a>正常使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.model&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;table2entry&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="包冲突的处理"><a href="#包冲突的处理" class="headerlink" title="包冲突的处理"></a>包冲突的处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.model&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;table2entry&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;!--druid--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">        &lt;!--lombok--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">        &lt;!--slf4j-api--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">    &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><h3 id="正常使用"><a href="#正常使用" class="headerlink" title="正常使用"></a>正常使用</h3><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
+    &lt;groupId&gt;com.bumao.model&lt;&#x2F;groupId&gt;
+    &lt;artifactId&gt;table2entry&lt;&#x2F;artifactId&gt;
+    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
+&lt;&#x2F;dependency&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="包冲突的处理"><a href="#包冲突的处理" class="headerlink" title="包冲突的处理"></a>包冲突的处理</h3><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
+    &lt;groupId&gt;com.bumao.model&lt;&#x2F;groupId&gt;
+    &lt;artifactId&gt;table2entry&lt;&#x2F;artifactId&gt;
+    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
+    &lt;exclusions&gt;
+        &lt;!--druid--&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;com.alibaba&lt;&#x2F;groupId&gt;
+            &lt;artifactId&gt;druid&lt;&#x2F;artifactId&gt;
+        &lt;&#x2F;exclusion&gt;
+        &lt;!--lombok--&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.projectlombok&lt;&#x2F;groupId&gt;
+            &lt;artifactId&gt;lombok&lt;&#x2F;artifactId&gt;
+        &lt;&#x2F;exclusion&gt;
+        &lt;!--slf4j-api--&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;
+            &lt;artifactId&gt;slf4j-api&lt;&#x2F;artifactId&gt;
+        &lt;&#x2F;exclusion&gt;
+    &lt;&#x2F;exclusions&gt;
+&lt;&#x2F;dependency&gt;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="Table2Entry的使用"><a href="#Table2Entry的使用" class="headerlink" title="Table2Entry的使用"></a>Table2Entry的使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">String sql = &quot;CREATE TABLE `card` (\n&quot; +</span><br><span class="line">        &quot;  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;PK&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `batch_id` int(11) NOT NULL COMMENT &#x27;所属批次ID&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `denomination` decimal(10,2) NOT NULL DEFAULT &#x27;0.00&#x27; COMMENT &#x27;面额&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `card_no` varchar(20) NOT NULL COMMENT &#x27;实体卡号&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `card_pass` varchar(20) NOT NULL COMMENT &#x27;实体密码&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `status` tinyint(3) unsigned NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;状态，0=未核销 1=已核销&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_time` datetime DEFAULT NULL COMMENT &#x27;核销核销时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_userid` varchar(32) DEFAULT NULL COMMENT &#x27;核销用户ID&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_mobile` varchar(20) DEFAULT NULL COMMENT &#x27;核销时用户的手机号码&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#x27;创建时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `stop_time` datetime NOT NULL COMMENT &#x27;结束核销时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_openid` varchar(64) DEFAULT NULL COMMENT &#x27;用户openid&#x27;,\n&quot; +</span><br><span class="line">        &quot;  PRIMARY KEY (`id`) USING BTREE,\n&quot; +</span><br><span class="line">        &quot;  KEY `batch_id` (`batch_id`) USING BTREE,\n&quot; +</span><br><span class="line">        &quot;  KEY `status` (`status`) USING BTREE\n&quot; +</span><br><span class="line">        &quot;) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;卡券批次表&#x27;;&quot; +</span><br><span class="line">        &quot;select * from card;&quot;;</span><br><span class="line">ToEntry toEntry = new ToEntry();</span><br><span class="line">List&lt;TableEntryVo&gt; tableEntryVos = toEntry.getEntry(sql);</span><br><span class="line">log.info(&quot;tableEntryVos=&#123;&#125;&quot;, JSONArray.toJSON(tableEntryVos));</span><br></pre></td></tr></table></figure>
+<h2 id="Table2Entry的使用"><a href="#Table2Entry的使用" class="headerlink" title="Table2Entry的使用"></a>Table2Entry的使用</h2><pre class="line-numbers language-none"><code class="language-none">String sql &#x3D; &quot;CREATE TABLE &#96;card&#96; (\n&quot; +
+        &quot;  &#96;id&#96; bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#39;PK&#39;,\n&quot; +
+        &quot;  &#96;batch_id&#96; int(11) NOT NULL COMMENT &#39;所属批次ID&#39;,\n&quot; +
+        &quot;  &#96;denomination&#96; decimal(10,2) NOT NULL DEFAULT &#39;0.00&#39; COMMENT &#39;面额&#39;,\n&quot; +
+        &quot;  &#96;card_no&#96; varchar(20) NOT NULL COMMENT &#39;实体卡号&#39;,\n&quot; +
+        &quot;  &#96;card_pass&#96; varchar(20) NOT NULL COMMENT &#39;实体密码&#39;,\n&quot; +
+        &quot;  &#96;status&#96; tinyint(3) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;状态，0&#x3D;未核销 1&#x3D;已核销&#39;,\n&quot; +
+        &quot;  &#96;active_time&#96; datetime DEFAULT NULL COMMENT &#39;核销核销时间&#39;,\n&quot; +
+        &quot;  &#96;active_userid&#96; varchar(32) DEFAULT NULL COMMENT &#39;核销用户ID&#39;,\n&quot; +
+        &quot;  &#96;active_mobile&#96; varchar(20) DEFAULT NULL COMMENT &#39;核销时用户的手机号码&#39;,\n&quot; +
+        &quot;  &#96;create_time&#96; datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#39;创建时间&#39;,\n&quot; +
+        &quot;  &#96;stop_time&#96; datetime NOT NULL COMMENT &#39;结束核销时间&#39;,\n&quot; +
+        &quot;  &#96;active_openid&#96; varchar(64) DEFAULT NULL COMMENT &#39;用户openid&#39;,\n&quot; +
+        &quot;  PRIMARY KEY (&#96;id&#96;) USING BTREE,\n&quot; +
+        &quot;  KEY &#96;batch_id&#96; (&#96;batch_id&#96;) USING BTREE,\n&quot; +
+        &quot;  KEY &#96;status&#96; (&#96;status&#96;) USING BTREE\n&quot; +
+        &quot;) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4 COMMENT&#x3D;&#39;卡券批次表&#39;;&quot; +
+        &quot;select * from card;&quot;;
+ToEntry toEntry &#x3D; new ToEntry();
+List&lt;TableEntryVo&gt; tableEntryVos &#x3D; toEntry.getEntry(sql);
+log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntryVos));<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>可同时转义多条建表语句，请用“;”隔开。</li>
 <li>会忽略建表语句以外的sql。</li>
@@ -196,11 +419,11 @@
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/PRJ-Table2Entry/">PRJ-Table2Entry</a><small>1</small></li>
-  
-    <li><a href="/categories/PRJ-%E8%AF%AD%E9%9B%80javaSDK/">PRJ-语雀javaSDK</a><small>1</small></li>
+    <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
   
     <li><a href="/categories/%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C/">未解之谜</a><small>1</small></li>
+  
+    <li><a href="/categories/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
   
   </ul>
 </div>

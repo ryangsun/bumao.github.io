@@ -2,7 +2,7 @@
 title: Table2Entry将建表语句转义为实体
 date: 2021-07-02 15:19:11
 tags: [java,Table2Entry]
-categories: [PRJ-Table2Entry]
+categories: [Table2Entry]
 comments: false
 ---
 Table2Entry可以方便的将mysql建表语句转化为实体对象，进而帮助你快速映射实体。

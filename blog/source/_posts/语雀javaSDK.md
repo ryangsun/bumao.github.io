@@ -2,7 +2,7 @@
 title: 语雀javaSDK
 date: 2021-07-02 15:19:11
 tags: [语雀,java,语雀javaSDK]
-categories: [PRJ-语雀javaSDK]
+categories: [语雀javaSDK]
 comments: false
 ---
 
