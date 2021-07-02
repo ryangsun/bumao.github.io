@@ -1,7 +1,8 @@
 ---
 title: 当mysql遇到ssl
 date: 2021-05-17 15:19:11
-tags: 未解之谜
+tags: mysql,java
+categories: 未解之谜
 ---
 SpringBoot 连接提示 Communications link failure
 ```
@@ -21,3 +22,4 @@ Establishing SSL connection without server’s identity verification is not reco
 用参数 useSSL=true 进行尝试，发现还是报一样的错误，当使用 useSSL=false 时，就可以进行连接了。也就是
 jdbc:mysql://192.168.221.201:3306/jdbc?useSSL=false
 不过为什么要这样连接，暂时没弄清楚，只知道时版本和兼容的原因。
+
