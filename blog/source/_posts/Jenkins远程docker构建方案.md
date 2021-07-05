@@ -1,6 +1,6 @@
 ---
 title: Jenkins远程docker构建方案
-date: 2021-07-05 16:19:11
+date: 2021-07-05 10:19:11
 tags: [docker,持续集成,ci/cd,devops,dind,jenkins]
 categories: [CI/CD]
 comments: false

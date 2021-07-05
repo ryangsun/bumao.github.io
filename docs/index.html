@@ -46,60 +46,6 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
-  <article id="post-Jenkins远程docker构建方案" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2021-07-05T08:19:11.000Z"><a href="/2021/07/05/Jenkins%E8%BF%9C%E7%A8%8Bdocker%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/">2021-07-05</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2021/07/05/Jenkins%E8%BF%9C%E7%A8%8Bdocker%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/">Jenkins远程docker构建方案</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>Jenkins，包括idea，有很多集成方案构建docker，但是因为网络结构、构建环境等客观原因，集成性的方案并不能满足需求。如：</p>
-<ul>
-<li>Jenkins权限限制；</li>
-<li>Jenkins已经是docker化部署，无法嵌套集成方案；</li>
-<li>构建环境不唯一，需要多个docker环境分别构建；</li>
-<li>Jenkins端无私仓权限，无法把构建好的docker部署到指定位置。</li>
-</ul>
-<p>这时，基于DinD的构建方案就非常方便了。</p>
-<h2 id="安装与部署DinD容器"><a href="#安装与部署DinD容器" class="headerlink" title="安装与部署DinD容器"></a>安装与部署DinD容器</h2><p>容器的Dockerfile见这里：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-dind">https://github.com/ryangsun/centos7-dind</a></p>
-<p>安装和部署介绍见</p>
-<h2 id="docker构建环境搭建"><a href="#docker构建环境搭建" class="headerlink" title="docker构建环境搭建"></a>docker构建环境搭建</h2><h3 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h3><p>1、将jenkins对应使用的私钥copy到dind容器的对应文件中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P &lt;DinD容器端口&gt; &lt;Jenkins私钥文件&gt; &lt;DinD容器&gt;:/home/jenkinsbuild/.ssh/....</span><br></pre></td></tr></table></figure>
-
-<p>2、Jenkins创建新的远程主机连接</p>
-<p>3、Jenkins SSH Publishers配置：</p>
-<p><img src="https://i.loli.net/2021/07/05/sJ3YfLiAhFHDrzN.png" alt="image-20210705115301268"></p>
-<p>第一步：针对一般的java项目，需要将jenkins打包好的jar文件和对应的Dockerfile拷贝到DinD容器。上图中，我们开了两个Transer Set，一个拷贝了.jar文件，一个拷贝了项目对应的Dockerfile。</p>
-<p>第二步：远程执行命令构建docker:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#进入构建目录并构建Docker</span><br><span class="line">cd ~/ci-jenkins/$&#123;JOB_NAME&#125; &amp;&amp; docker build -t &lt;私仓IP&gt;:&lt;私仓端口&gt;/mytest/$&#123;JOB_NAME&#125;:$&#123;BUILD_ID&#125; .</span><br><span class="line">#将构建好的docker推到私仓</span><br><span class="line">docker push &lt;私仓IP&gt;:&lt;私仓端口&gt;/mytest/$&#123;JOB_NAME&#125;:$&#123;BUILD_ID&#125;</span><br><span class="line">#推私仓成功后，删除本地的docker image</span><br><span class="line">docker rmi &lt;私仓IP&gt;:&lt;私仓端口&gt;/mytest/$&#123;JOB_NAME&#125;:$&#123;BUILD_ID&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第三步：触发后续操作，如Rancher构建等。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
   <article id="post-Harbor SSL避坑指南" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -197,6 +143,60 @@
 
 
 <h2 id="git地址"><a href="#git地址" class="headerlink" title="git地址"></a>git地址</h2><p><a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-dind">https://github.com/ryangsun/centos7-dind</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Jenkins远程docker构建方案" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-05T02:19:11.000Z"><a href="/2021/07/05/Jenkins%E8%BF%9C%E7%A8%8Bdocker%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/">2021-07-05</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2021/07/05/Jenkins%E8%BF%9C%E7%A8%8Bdocker%E6%9E%84%E5%BB%BA%E6%96%B9%E6%A1%88/">Jenkins远程docker构建方案</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>Jenkins，包括idea，有很多集成方案构建docker，但是因为网络结构、构建环境等客观原因，集成性的方案并不能满足需求。如：</p>
+<ul>
+<li>Jenkins权限限制；</li>
+<li>Jenkins已经是docker化部署，无法嵌套集成方案；</li>
+<li>构建环境不唯一，需要多个docker环境分别构建；</li>
+<li>Jenkins端无私仓权限，无法把构建好的docker部署到指定位置。</li>
+</ul>
+<p>这时，基于DinD的构建方案就非常方便了。</p>
+<h2 id="安装与部署DinD容器"><a href="#安装与部署DinD容器" class="headerlink" title="安装与部署DinD容器"></a>安装与部署DinD容器</h2><p>容器的Dockerfile见这里：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-dind">https://github.com/ryangsun/centos7-dind</a></p>
+<p>安装和部署介绍见</p>
+<h2 id="docker构建环境搭建"><a href="#docker构建环境搭建" class="headerlink" title="docker构建环境搭建"></a>docker构建环境搭建</h2><h3 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h3><p>1、将jenkins对应使用的私钥copy到dind容器的对应文件中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P &lt;DinD容器端口&gt; &lt;Jenkins私钥文件&gt; &lt;DinD容器&gt;:/home/jenkinsbuild/.ssh/....</span><br></pre></td></tr></table></figure>
+
+<p>2、Jenkins创建新的远程主机连接</p>
+<p>3、Jenkins SSH Publishers配置：</p>
+<p><img src="https://i.loli.net/2021/07/05/sJ3YfLiAhFHDrzN.png" alt="image-20210705115301268"></p>
+<p>第一步：针对一般的java项目，需要将jenkins打包好的jar文件和对应的Dockerfile拷贝到DinD容器。上图中，我们开了两个Transer Set，一个拷贝了.jar文件，一个拷贝了项目对应的Dockerfile。</p>
+<p>第二步：远程执行命令构建docker:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#进入构建目录并构建Docker</span><br><span class="line">cd ~/ci-jenkins/$&#123;JOB_NAME&#125; &amp;&amp; docker build -t &lt;私仓IP&gt;:&lt;私仓端口&gt;/mytest/$&#123;JOB_NAME&#125;:$&#123;BUILD_ID&#125; .</span><br><span class="line">#将构建好的docker推到私仓</span><br><span class="line">docker push &lt;私仓IP&gt;:&lt;私仓端口&gt;/mytest/$&#123;JOB_NAME&#125;:$&#123;BUILD_ID&#125;</span><br><span class="line">#推私仓成功后，删除本地的docker image</span><br><span class="line">docker rmi &lt;私仓IP&gt;:&lt;私仓端口&gt;/mytest/$&#123;JOB_NAME&#125;:$&#123;BUILD_ID&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三步：触发后续操作，如Rancher构建等。</p>
 
       
     </div>
