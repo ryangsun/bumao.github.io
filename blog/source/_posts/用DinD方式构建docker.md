@@ -58,6 +58,4 @@ ssh -p \<port\> jenkinsbuild@localhost
 
 ## git地址
 
-```
 https://github.com/ryangsun/centos7-dind
-```
