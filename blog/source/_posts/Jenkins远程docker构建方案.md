@@ -11,9 +11,9 @@ comments: false
 Jenkins，包括idea，有很多集成方案构建docker，但是因为网络结构、构建环境等客观原因，集成性的方案并不能满足需求。如：
 
 - Jenkins权限限制；
-- jenkins已经是docker化部署，无法嵌套集成方案；
+- Jenkins已经是docker化部署，无法嵌套集成方案；
 - 构建环境不唯一，需要多个docker环境分别构建；
-- jenkins端无私仓权限，无法把构建好的docker部署到指定位置。
+- Jenkins端无私仓权限，无法把构建好的docker部署到指定位置。
 
 这时，基于DinD的构建方案就非常方便了。
 
@@ -27,7 +27,9 @@ https://github.com/ryangsun/centos7-dind
 
 安装和部署介绍见
 
-https://blog.bumao.com/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/
+[用DinD方式构建docker]: https://blog.bumao.com/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/
+
+
 
 ## docker构建环境搭建
 

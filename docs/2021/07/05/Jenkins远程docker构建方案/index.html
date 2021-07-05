@@ -9,9 +9,9 @@
   <meta name="description" content="背景介绍Jenkins，包括idea，有很多集成方案构建docker，但是因为网络结构、构建环境等客观原因，集成性的方案并不能满足需求。如：
 
 Jenkins权限限制；
-jenkins已经是docker化部署，无法嵌套集成方案；
+Jenkins已经是docker化部署，无法嵌套集成方案；
 构建环境不唯一，需要多个docker环境分别构建；
-jenkins端无">
+Jenkins端无">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -71,15 +71,14 @@ jenkins端无">
         <h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>Jenkins，包括idea，有很多集成方案构建docker，但是因为网络结构、构建环境等客观原因，集成性的方案并不能满足需求。如：</p>
 <ul>
 <li>Jenkins权限限制；</li>
-<li>jenkins已经是docker化部署，无法嵌套集成方案；</li>
+<li>Jenkins已经是docker化部署，无法嵌套集成方案；</li>
 <li>构建环境不唯一，需要多个docker环境分别构建；</li>
-<li>jenkins端无私仓权限，无法把构建好的docker部署到指定位置。</li>
+<li>Jenkins端无私仓权限，无法把构建好的docker部署到指定位置。</li>
 </ul>
 <p>这时，基于DinD的构建方案就非常方便了。</p>
 <h2 id="安装与部署DinD容器"><a href="#安装与部署DinD容器" class="headerlink" title="安装与部署DinD容器"></a>安装与部署DinD容器</h2><p>容器的Dockerfile见这里：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-dind">https://github.com/ryangsun/centos7-dind</a></p>
 <p>安装和部署介绍见</p>
-<p><a target="_blank" rel="noopener" href="https://blog.bumao.com/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/">https://blog.bumao.com/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/</a></p>
 <h2 id="docker构建环境搭建"><a href="#docker构建环境搭建" class="headerlink" title="docker构建环境搭建"></a>docker构建环境搭建</h2><h3 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h3><p>1、将jenkins对应使用的私钥copy到dind容器的对应文件中：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P &lt;DinD容器端口&gt; &lt;Jenkins私钥文件&gt; &lt;DinD容器&gt;:/home/jenkinsbuild/.ssh/....</span><br></pre></td></tr></table></figure>
 
@@ -131,7 +130,7 @@ jenkins端无">
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/CI-CD/">CI/CD</a><small>3</small></li>
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>4</small></li>
   
     <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
   
@@ -150,15 +149,15 @@ jenkins端无">
   
     <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
   
-    <li><a href="/tags/ci-cd/">ci/cd</a><small>3</small></li>
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>4</small></li>
   
-    <li><a href="/tags/devops/">devops</a><small>3</small></li>
+    <li><a href="/tags/devops/">devops</a><small>4</small></li>
   
     <li><a href="/tags/dind/">dind</a><small>2</small></li>
   
-    <li><a href="/tags/docker/">docker</a><small>3</small></li>
+    <li><a href="/tags/docker/">docker</a><small>4</small></li>
   
-    <li><a href="/tags/harbor/">harbor</a><small>1</small></li>
+    <li><a href="/tags/harbor/">harbor</a><small>2</small></li>
   
     <li><a href="/tags/java/">java</a><small>3</small></li>
   
@@ -166,7 +165,7 @@ jenkins端无">
   
     <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
   
-    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>3</small></li>
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>4</small></li>
   
     <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
   
