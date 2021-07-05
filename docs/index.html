@@ -46,6 +46,57 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-用DinD方式构建docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-05T07:19:11.000Z"><a href="/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/">2021-07-05</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/">用DinD方式构建docke用DinD方式构建dockev</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h2 id="Docker-in-Docker-dind"><a href="#Docker-in-Docker-dind" class="headerlink" title="Docker in Docker(dind)"></a>Docker in Docker(dind)</h2><p>Docker in Docker(dind) image可以用于Jenkins做build， 可以在一台机器上起多个docker image，每个image里面安装不同的第三方，形成不同的build环境，然后可以将待编译的代码SCP或GIT过去，用指定账号SSH来进行编译，达到一个机器多种编译环境的效果，提高了效率。Docker in Docker(dind) 镜像基于centos7，可用于jenkins打包编译：</p>
+<ul>
+<li>基础镜像: centos7 </li>
+<li>内置用户：jenkinsbuild, 密码: jenkinsbuild, 构建文件夹: /home/jenkinsbuild/ci-jenkins</li>
+<li>采用ssh login方式登录</li>
+</ul>
+<h2 id="构建和使用镜像"><a href="#构建和使用镜像" class="headerlink" title="构建和使用镜像"></a>构建和使用镜像</h2><h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build-centos7-dind</span><br></pre></td></tr></table></figure>
+
+<h3 id="展开容器"><a href="#展开容器" class="headerlink" title="展开容器"></a>展开容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 22 \</span><br><span class="line">--name=centos7-dind \</span><br><span class="line">-e TZ=Asia/Shanghai \</span><br><span class="line">-e LANG=en_US.UTF-8  \</span><br><span class="line">-v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">-v /usr/bin/docker:/usr/bin/docker \</span><br><span class="line">centos7-dind:1.0.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="将打代码copy到容器"><a href="#将打代码copy到容器" class="headerlink" title="将打代码copy到容器"></a>将打代码copy到容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P \&lt;port\&gt; -r \&lt;buildsourcecode\&gt; jenkinsbuild@localhost:/home/jenkinsbuild/ci-jenkins/</span><br></pre></td></tr></table></figure>
+
+<h3 id="ssh-登录进去"><a href="#ssh-登录进去" class="headerlink" title="ssh 登录进去"></a>ssh 登录进去</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p \&lt;port\&gt; jenkinsbuild@localhost  </span><br></pre></td></tr></table></figure>
+
+<h3 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将对对应公钥copy到 /home/jenkinsbuild/ 对应位置即可。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="git地址"><a href="#git地址" class="headerlink" title="git地址"></a>git地址</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/ryangsun/centos7-dind</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-Harbor的安装与配置" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -70,7 +121,7 @@
 <h3 id="Harbor的github地址"><a href="#Harbor的github地址" class="headerlink" title="Harbor的github地址"></a>Harbor的github地址</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/goharbor/harbor</span><br></pre></td></tr></table></figure>
 
 <p>(已经有15.2K的star了)</p>
-<h2 id="Harbor的安装"><a href="#Harbor的安装" class="headerlink" title="Harbor的安装"></a>Harbor的安装</h2><h3 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h3><p>宿主机已安装好docker和docker-compose，具体安装方案这里不不展开。</p>
+<h2 id="安装Harbor"><a href="#安装Harbor" class="headerlink" title="安装Harbor"></a>安装Harbor</h2><h3 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h3><p>宿主机已安装好docker和docker-compose，具体安装方案这里不不展开。</p>
 <h3 id="下载-amp-解压"><a href="#下载-amp-解压" class="headerlink" title="下载&amp;解压"></a>下载&amp;解压</h3><p>Harbor有两个大版本，一是1.x，另外是2.x，据说2.x优化了很多，所以这里采用2.3.0这个版本，下载离线安装包。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/goharbor/harbor/releases/download/v2.3.0/harbor-offline-installer-v2.3.0.tgz</span><br><span class="line">tar zxvf harbor-offline-installer-v2.3.0.tgz</span><br><span class="line">cd harbor</span><br></pre></td></tr></table></figure>
 
@@ -483,7 +534,7 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/CI-CD/">CI/CD</a><small>1</small></li>
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>2</small></li>
   
     <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
   
@@ -502,11 +553,13 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   
     <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
   
-    <li><a href="/tags/ci-cd/">ci/cd</a><small>1</small></li>
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>2</small></li>
   
-    <li><a href="/tags/devops/">devops</a><small>1</small></li>
+    <li><a href="/tags/devops/">devops</a><small>2</small></li>
   
-    <li><a href="/tags/docker/">docker</a><small>1</small></li>
+    <li><a href="/tags/dind/">dind</a><small>1</small></li>
+  
+    <li><a href="/tags/docker/">docker</a><small>2</small></li>
   
     <li><a href="/tags/harbor/">harbor</a><small>1</small></li>
   
@@ -514,7 +567,7 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   
     <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
   
-    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>1</small></li>
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>2</small></li>
   
     <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
   

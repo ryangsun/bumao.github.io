@@ -28,7 +28,7 @@ https://github.com/goharbor/harbor
 
 (已经有15.2K的star了)
 
-## Harbor的安装
+## 安装Harbor
 
 ### 前置条件
 

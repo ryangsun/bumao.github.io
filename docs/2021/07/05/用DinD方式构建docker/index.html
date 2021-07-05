@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>用DinD方式构建docke用DinD方式构建dockev | 布猫</title>
+  <meta name="author" content="Ryan.G.Sun">
+  
+  <meta name="description" content="Docker in Docker(dind)Docker in Docker(dind) image可以用于Jenkins做build， 可以在一台机器上起多个docker image，每个image里面安装不同的第三方，形成不同的build环境，然后可以将待编译的代码SCP或GIT过去，用指定账号">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="用DinD方式构建docke用DinD方式构建dockev"/>
+  <meta property="og:site_name" content="布猫"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <!--<h1><a href="/">布猫</a></h1>-->
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px"/></a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">首页</a></li>
+    
+      <li><a href="/archives">归档</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-用DinD方式构建docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2021-07-05T07:19:11.000Z"><a href="/2021/07/05/%E7%94%A8DinD%E6%96%B9%E5%BC%8F%E6%9E%84%E5%BB%BAdocker/">2021-07-05</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">用DinD方式构建docke用DinD方式构建dockev</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <h2 id="Docker-in-Docker-dind"><a href="#Docker-in-Docker-dind" class="headerlink" title="Docker in Docker(dind)"></a>Docker in Docker(dind)</h2><p>Docker in Docker(dind) image可以用于Jenkins做build， 可以在一台机器上起多个docker image，每个image里面安装不同的第三方，形成不同的build环境，然后可以将待编译的代码SCP或GIT过去，用指定账号SSH来进行编译，达到一个机器多种编译环境的效果，提高了效率。Docker in Docker(dind) 镜像基于centos7，可用于jenkins打包编译：</p>
+<ul>
+<li>基础镜像: centos7 </li>
+<li>内置用户：jenkinsbuild, 密码: jenkinsbuild, 构建文件夹: /home/jenkinsbuild/ci-jenkins</li>
+<li>采用ssh login方式登录</li>
+</ul>
+<h2 id="构建和使用镜像"><a href="#构建和使用镜像" class="headerlink" title="构建和使用镜像"></a>构建和使用镜像</h2><h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./build-centos7-dind</span><br></pre></td></tr></table></figure>
+
+<h3 id="展开容器"><a href="#展开容器" class="headerlink" title="展开容器"></a>展开容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 22 \</span><br><span class="line">--name=centos7-dind \</span><br><span class="line">-e TZ=Asia/Shanghai \</span><br><span class="line">-e LANG=en_US.UTF-8  \</span><br><span class="line">-v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">-v /usr/bin/docker:/usr/bin/docker \</span><br><span class="line">centos7-dind:1.0.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="将打代码copy到容器"><a href="#将打代码copy到容器" class="headerlink" title="将打代码copy到容器"></a>将打代码copy到容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp -P \&lt;port\&gt; -r \&lt;buildsourcecode\&gt; jenkinsbuild@localhost:/home/jenkinsbuild/ci-jenkins/</span><br></pre></td></tr></table></figure>
+
+<h3 id="ssh-登录进去"><a href="#ssh-登录进去" class="headerlink" title="ssh 登录进去"></a>ssh 登录进去</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p \&lt;port\&gt; jenkinsbuild@localhost  </span><br></pre></td></tr></table></figure>
+
+<h3 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将对对应公钥copy到 /home/jenkinsbuild/ 对应位置即可。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="git地址"><a href="#git地址" class="headerlink" title="git地址"></a>git地址</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/ryangsun/centos7-dind</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/CI-CD/">CI/CD</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/docker/">docker</a>, <a href="/tags/devops/">devops</a>, <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>, <a href="/tags/ci-cd/">ci/cd</a>, <a href="/tags/dind/">dind</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="as_sitesearch" value="ryangsun.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>2</small></li>
+  
+    <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/categories/%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C/">未解之谜</a><small>1</small></li>
+  
+    <li><a href="/categories/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>2</small></li>
+  
+    <li><a href="/tags/devops/">devops</a><small>2</small></li>
+  
+    <li><a href="/tags/dind/">dind</a><small>1</small></li>
+  
+    <li><a href="/tags/docker/">docker</a><small>2</small></li>
+  
+    <li><a href="/tags/harbor/">harbor</a><small>1</small></li>
+  
+    <li><a href="/tags/java/">java</a><small>3</small></li>
+  
+    <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
+  
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>2</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2021 Ryan.G.Sun
+  
+  @
+  <a target="_blank" rel="noopener" href="https://bumao.com">bumao.com</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
