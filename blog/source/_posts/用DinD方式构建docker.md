@@ -1,5 +1,5 @@
 ---
-title: 用DinD方式构建docke用DinD方式构建dockev
+title: 用DinD方式构建docke用DinD方式构建docker
 date: 2021-07-05 15:19:11
 tags: [docker,持续集成,ci/cd,devops,dind]
 categories: [CI/CD]
