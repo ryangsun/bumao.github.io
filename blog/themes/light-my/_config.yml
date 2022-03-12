@@ -1,6 +1,6 @@
 menu:
-  Home: 首页
-  Archives: 归档
+  Home:
+  Archives: archives
 
 widgets:
 - search
