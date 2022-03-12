@@ -1,3 +1,24 @@
+## 初始化
+- 安装 nodejs
+- 安装 hexo`npm install -g hexo-cli`
+- 在 blog目录下 `npm install`
+
+## 基本使用
+- hexo g  `生成`
+- hexo s `预览`
+
+## 本地预览
+
+本地预览
+```
+hexo clean
+hexo g
+hexo s
+```
+打开 http://localhost:4000/ 预览效果
+
+---
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/ryangsun/bumao.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
