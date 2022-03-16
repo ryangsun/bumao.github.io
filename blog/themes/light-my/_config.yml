@@ -1,5 +1,5 @@
 menu:
-  Home:
+  Home: /
   Archives: archives
 
 widgets:
@@ -15,7 +15,7 @@ twitter:
   tweet_count: 5
 
 addthis:
-  enable: false
+  enable: true
   pubid:
   facebook: true
   twitter: true
