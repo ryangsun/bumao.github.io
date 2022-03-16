@@ -5,6 +5,18 @@ tags: [gitlab,docker,持续集成,ci/cd,devops]
 categories: [CI/CD]
 comments: false
 ---
+《[Gitlab持续集成Runner的安装与配置](/2022/03/15/Gitlab持续集成Runner安装与配置/)》
+
+《[Gitlab持续集成详细配置与工作原理](/2022/03/16/Gitlab持续集成详细配置与工作原理/)》
+
+《[为Gitlab持续集成打造一个部署用的docker](/2022/03/16/为Gitlab持续集成打造一个部署用的docker/)》
+
+《[Gitlab持续集成「springboot篇」](/2022/03/16/Gitlab持续集成「springboot篇」/)》
+
+《[Gitlab持续集成「PHP篇」](/2022/03/16/Gitlab持续集成「PHP篇」/)》
+
+《[Gitlab持续集成「VUE篇」](/2022/03/16/Gitlab持续集成「VUE篇」/)》
+
 
 首先，gitlab不做持续集成的事儿，只是发送指令和接收结果，实际做cicd的是Runner。安装和配置runner有集中方式，这里记录两种：
 
