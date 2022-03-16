@@ -46,3 +46,24 @@ gitlab-ci-multi-runner register
 ```
 后面的步骤跟docker方式类似，gitlab的路径、token，连接方式选ssh，然后把本机的IP、ssh端口、账号密码录入进去。
 
+## 配置过程（以docker方式为例）
+```
+# docker exec -it gitlab-runner-java01 gitlab-runner register
+Runtime platform                                    arch=amd64 os=linux pid=24 revision=5316d4ac version=14.6.0
+Running in system-mode.                            
+                                                   
+Enter the GitLab instance URL (for example, https://gitlab.com/):
+<这里输入gitlab私仓的url>
+Enter the registration token:
+<这里输入runner的token>
+Enter a description for the runner:
+[007fa02670d1]: <给这个runner起个名字，会显示在gitlab中>
+Enter tags for the runner (comma-separated):
+<这里输入tag，跑任务的时候可以通过 tags 来指定>
+Registering runner... succeeded                     runner=rANP_dLs
+Enter an executor: docker, docker-ssh, parallels, shell, virtualbox, docker+machine, custom, ssh, docker-ssh+machine, kubernetes:
+<运行方式，这里写 docker>
+Enter the default Docker image (for example, ruby:2.6):
+<默认运行容器，如果在job中不指定容器，默认采用的运行容器，这里我添了 tico/docker>
+Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded! 
+```
