@@ -6,9 +6,7 @@ categories: [CI/CD]
 comments: false
 ---
 
-Harbor的安装与配置请参考这里
-
-[Harbor的安装与配置]: https://blog.bumao.com/2021/07/03/Harbor%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/
+Harbor的安装与配置请参考这里[Harbor的安装与配置](/2021/07/03/Harbor%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/)
 
 Docker默认情况下，push和pull对应的仓库均需要ssl加密，如果我们在内网采用Harbor作为私仓，有两种方案可以解决：
 
