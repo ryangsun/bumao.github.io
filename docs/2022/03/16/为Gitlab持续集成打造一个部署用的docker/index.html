@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>为Gitlab持续集成打造一个部署用的docker | 布猫</title>
+  <meta name="author" content="Ryan.G.Sun">
+  
+  <meta name="description" content="《Gitlab持续集成Runner的安装与配置》
+《Gitlab持续集成详细配置与工作原理》
+《为Gitlab持续集成打造一个部署用的docker》
+《Gitlab持续集成「springboot篇」》
+《Gitlab持续集成「PHP篇」》
+《Gitlab持续集成「VUE篇」》
+因为docker化部署">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="为Gitlab持续集成打造一个部署用的docker"/>
+  <meta property="og:site_name" content="布猫"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <!--<h1><a href="/">布猫</a></h1>-->
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px" title="布猫"/></a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-为Gitlab持续集成打造一个部署用的docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:20:11.000Z"><a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">为Gitlab持续集成打造一个部署用的docker</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>因为docker化部署的Runner，每一部都需要在容器中完成，针对没有完全使用k8等容器化运维的项目或者项目构建过程中需要做额外操作的ci/cd流程，使用官方容器就比较尴尬：</p>
+<ul>
+<li>打包好的目标文件，在maven、nodejs容器因为没有对应的命令，无法上传到指定位置</li>
+<li>ci/cd过程复杂，需要跟其他服务交互</li>
+</ul>
+<p>这种情况，咱们就得自己包docker image来给Runner用。</p>
+<h2 id="ceontos-sshpass"><a href="#ceontos-sshpass" class="headerlink" title="ceontos-sshpass"></a>ceontos-sshpass</h2><p>为了应对以上问题，笔者自己包了个发版的docker，地址在 <a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-sshpass">https://github.com/ryangsun/centos7-sshpass</a></p>
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ryangsun/centos7-sshpass.git</span><br><span class="line">chmod 700 build-image.sh</span><br><span class="line">./build-image.sh</span><br></pre></td></tr></table></figure>
+<p>默认创建的docker镜像为 <code>centos7-sshpass:1.0.0</code>，233M大小。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/CI-CD/">CI/CD</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/docker/">docker</a>, <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>, <a href="/tags/ci-cd/">ci/cd</a>, <a href="/tags/devops/">devops</a>, <a href="/tags/gitlab/">gitlab</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="as_sitesearch" value="ryangsun.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>10</small></li>
+  
+    <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/categories/%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C/">未解之谜</a><small>1</small></li>
+  
+    <li><a href="/categories/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>10</small></li>
+  
+    <li><a href="/tags/devops/">devops</a><small>10</small></li>
+  
+    <li><a href="/tags/dind/">dind</a><small>2</small></li>
+  
+    <li><a href="/tags/docker/">docker</a><small>10</small></li>
+  
+    <li><a href="/tags/gitlab/">gitlab</a><small>6</small></li>
+  
+    <li><a href="/tags/harbor/">harbor</a><small>2</small></li>
+  
+    <li><a href="/tags/java/">java</a><small>3</small></li>
+  
+    <li><a href="/tags/jenkins/">jenkins</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
+  
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>10</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2022 Ryan.G.Sun
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

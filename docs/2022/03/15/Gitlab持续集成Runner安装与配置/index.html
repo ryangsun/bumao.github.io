@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Gitlib持续集成Runner的安装与配置 | 布猫</title>
+  <meta name="author" content="Ryan.G.Sun">
+  
+  <meta name="description" content="《Gitlab持续集成Runner的安装与配置》
+《Gitlab持续集成详细配置与工作原理》
+《为Gitlab持续集成打造一个部署用的docker》
+《Gitlab持续集成「springboot篇」》
+《Gitlab持续集成「PHP篇」》
+《Gitlab持续集成「VUE篇」》
+首先，gitlab不做">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Gitlib持续集成Runner的安装与配置"/>
+  <meta property="og:site_name" content="布猫"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <!--<h1><a href="/">布猫</a></h1>-->
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px" title="布猫"/></a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-Gitlab持续集成Runner安装与配置" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-15T08:19:11.000Z"><a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">2022-03-15</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Gitlib持续集成Runner的安装与配置</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>首先，gitlab不做持续集成的事儿，只是发送指令和接收结果，实际做cicd的是Runner。安装和配置runner有集中方式，这里记录两种：</p>
+<h2 id="docker方式，非常轻便灵活"><a href="#docker方式，非常轻便灵活" class="headerlink" title="docker方式，非常轻便灵活"></a>docker方式，非常轻便灵活</h2><p>展开容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">--name gitlab-runner-docker \</span><br><span class="line">--restart always \</span><br><span class="line">-v /dockerdata/gitlab-runner-docker/etc/gitlab-runner:/etc/gitlab-runner \</span><br><span class="line">-v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">gitlab/gitlab-runner:latest</span><br></pre></td></tr></table></figure>
+<p>接入对应的gitlab</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it gitlab-runner-docker gitlab-runner register</span><br></pre></td></tr></table></figure>
+<p>接着会询问gitlab的地址、token ，这两个信息，可以在我们自己gitlab的 admin-&gt;概览-&gt;Runner中查询到。</p>
+<p>之后会询问 这个runner的名字和tag，tag这里要注意，会影响到实际cicd中的调用，因为跑自动化的时候是可以通过tag来指定runner的。</p>
+<p>交互式提问结束后，在gitlab的Runner页面，应该有对应的Runner注册上来了。</p>
+<h2 id="Centos中通过ssh连接"><a href="#Centos中通过ssh连接" class="headerlink" title="Centos中通过ssh连接"></a>Centos中通过ssh连接</h2><p>添加yum源</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<p>安装runner</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure>
+<p>向GitLab-CI注册runner</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ci-multi-runner register</span><br></pre></td></tr></table></figure>
+<p>后面的步骤跟docker方式类似，gitlab的路径、token，连接方式选ssh，然后把本机的IP、ssh端口、账号密码录入进去。</p>
+<h2 id="配置过程（以docker方式为例）"><a href="#配置过程（以docker方式为例）" class="headerlink" title="配置过程（以docker方式为例）"></a>配置过程（以docker方式为例）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># docker exec -it gitlab-runner-java01 gitlab-runner register</span><br><span class="line">Runtime platform                                    arch=amd64 os=linux pid=24 revision=5316d4ac version=14.6.0</span><br><span class="line">Running in system-mode.                            </span><br><span class="line">                                                   </span><br><span class="line">Enter the GitLab instance URL (for example, https://gitlab.com/):</span><br><span class="line">&lt;这里输入gitlab私仓的url&gt;</span><br><span class="line">Enter the registration token:</span><br><span class="line">&lt;这里输入runner的token&gt;</span><br><span class="line">Enter a description for the runner:</span><br><span class="line">[007fa02670d1]: &lt;给这个runner起个名字，会显示在gitlab中&gt;</span><br><span class="line">Enter tags for the runner (comma-separated):</span><br><span class="line">&lt;这里输入tag，跑任务的时候可以通过 tags 来指定&gt;</span><br><span class="line">Registering runner... succeeded                     runner=rANP_dLs</span><br><span class="line">Enter an executor: docker, docker-ssh, parallels, shell, virtualbox, docker+machine, custom, ssh, docker-ssh+machine, kubernetes:</span><br><span class="line">&lt;运行方式，这里写 docker&gt;</span><br><span class="line">Enter the default Docker image (for example, ruby:2.6):</span><br><span class="line">&lt;默认运行容器，如果在job中不指定容器，默认采用的运行容器，这里我添了 tico/docker&gt;</span><br><span class="line">Runner registered successfully. Feel free to start it, but if it&#x27;s running already the config should be automatically reloaded! </span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/CI-CD/">CI/CD</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/docker/">docker</a>, <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>, <a href="/tags/ci-cd/">ci/cd</a>, <a href="/tags/devops/">devops</a>, <a href="/tags/gitlab/">gitlab</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="as_sitesearch" value="ryangsun.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>10</small></li>
+  
+    <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/categories/%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C/">未解之谜</a><small>1</small></li>
+  
+    <li><a href="/categories/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>10</small></li>
+  
+    <li><a href="/tags/devops/">devops</a><small>10</small></li>
+  
+    <li><a href="/tags/dind/">dind</a><small>2</small></li>
+  
+    <li><a href="/tags/docker/">docker</a><small>10</small></li>
+  
+    <li><a href="/tags/gitlab/">gitlab</a><small>6</small></li>
+  
+    <li><a href="/tags/harbor/">harbor</a><small>2</small></li>
+  
+    <li><a href="/tags/java/">java</a><small>3</small></li>
+  
+    <li><a href="/tags/jenkins/">jenkins</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
+  
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>10</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2022 Ryan.G.Sun
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

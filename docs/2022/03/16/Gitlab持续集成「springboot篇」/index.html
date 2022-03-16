@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  
+  <title>Gitlab持续集成「springboot篇」 | 布猫</title>
+  <meta name="author" content="Ryan.G.Sun">
+  
+  <meta name="description" content="《Gitlab持续集成Runner的安装与配置》
+《Gitlab持续集成详细配置与工作原理》
+《为Gitlab持续集成打造一个部署用的docker》
+《Gitlab持续集成「springboot篇」》
+《Gitlab持续集成「PHP篇」》
+《Gitlab持续集成「VUE篇」》
+java、vue等项目">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Gitlab持续集成「springboot篇」"/>
+  <meta property="og:site_name" content="布猫"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link rel="shortcut icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <!--[if lt IE 9]><script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <!--<h1><a href="/">布猫</a></h1>-->
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px" title="布猫"/></a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-Gitlab持续集成「springboot篇」" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:21:11.000Z"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="p-name title" itemprop="headline name">Gitlab持续集成「springboot篇」</h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>java、vue等项目需要编译，所以，至少有两个job，一个是用 maven镜像打jar包，一个是发布到对应位置。</p>
+<p>发布节点用到的镜像<code>centos7-sshpass:1.0.0</code>详见 《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"># 定义了两个流程</span><br><span class="line">stages:</span><br><span class="line">  - prepare</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">prepare:    # job的名称，可以随便起</span><br><span class="line">  stage: prepare    #这里要跟 stages 里面定义的保持一致</span><br><span class="line">  image: &#x27;maven:3.6.3-openjdk-8&#x27;    #用哪个镜像</span><br><span class="line">  cache:    # 缓存</span><br><span class="line">    policy: pull-push   #缓存方式 有 pull push pull-push</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/     #把target目录缓冲下来给下一步用</span><br><span class="line">  script:   #执行脚本</span><br><span class="line">    - mvn -v &amp;&amp; java -version</span><br><span class="line">    - mvn clean install</span><br><span class="line">  tags:</span><br><span class="line">    - java01    #对应的Runner的TAG，多个runner可以用同样的tag，到时候gitlab来分配具体用哪个runner来执行</span><br><span class="line">  only:</span><br><span class="line">    changes:    此步骤（job）通过文件修改来触发，下面定义的意思是，这两个文件其中一个有修改即触发执行</span><br><span class="line">      - dev_ver</span><br><span class="line">      - test_ver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">deploy_dev:     #往dev版发布</span><br><span class="line">  stage: deploy     #这里要跟 stages 里面定义的保持一致</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    policy: pull  #只读不写</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br><span class="line">  script:</span><br><span class="line">    - ls ./target/</span><br><span class="line">    # 拷贝jar包</span><br><span class="line">    - sshpass -p abcd scp -o StrictHostKeyChecking=no -P 1234 target/demo-0.0.1-SNAPSHOT.jar root@localhost:/app/demo-0.0.1-SNAPSHOT.jar</span><br><span class="line">    # 运行脚本</span><br><span class="line">    - sshpass -p abcd ssh -p 1234 root@localhost &quot;/app/jenkins_restart.sh demo-0.0.1-SNAPSHOT &gt;&gt; /app/jenkins_restart.log&quot;</span><br><span class="line">  tags:</span><br><span class="line">    - java01</span><br><span class="line">  only:</span><br><span class="line">    changes:    #这里仅针对dev_ver的修改触发</span><br><span class="line">      - dev_ver</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">deploy_test:    #往test版发包</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    policy: pull  #只读不写</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br><span class="line">  script:</span><br><span class="line">    - 。。。。。。</span><br><span class="line">  tags:</span><br><span class="line">    - java01</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - test_ver    #仅 文件 test_ver修改时候触发</span><br></pre></td></tr></table></figure>
+
+<p>以上这个案例，定义了两个环节 <code>prepare</code>和<code>deploy</code>，有三个job：</p>
+<ul>
+<li><code>prepare:</code> 在dev_ver或test_ver被修改时会被触发</li>
+<li><code>deploy_dev:</code> 在dev_ver被修改时会被触发</li>
+<li><code>deploy_test:</code> 在test_ver被修改时会被触发</li>
+</ul>
+<p>那么，如果：</p>
+<ul>
+<li>项目根目录下的 <code>dev_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_dev:</code></li>
+<li>项目根目录下的 <code>test_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_test:</code></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/CI-CD/">CI/CD</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/docker/">docker</a>, <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>, <a href="/tags/ci-cd/">ci/cd</a>, <a href="/tags/devops/">devops</a>, <a href="/tags/gitlab/">gitlab</a>
+  </div>
+
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="as_sitesearch" value="ryangsun.github.io">
+  </form>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>10</small></li>
+  
+    <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/categories/%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C/">未解之谜</a><small>1</small></li>
+  
+    <li><a href="/categories/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
+  
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>10</small></li>
+  
+    <li><a href="/tags/devops/">devops</a><small>10</small></li>
+  
+    <li><a href="/tags/dind/">dind</a><small>2</small></li>
+  
+    <li><a href="/tags/docker/">docker</a><small>10</small></li>
+  
+    <li><a href="/tags/gitlab/">gitlab</a><small>6</small></li>
+  
+    <li><a href="/tags/harbor/">harbor</a><small>2</small></li>
+  
+    <li><a href="/tags/java/">java</a><small>3</small></li>
+  
+    <li><a href="/tags/jenkins/">jenkins</a><small>1</small></li>
+  
+    <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
+  
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>10</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
+  
+    <li><a href="/tags/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2022 Ryan.G.Sun
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+
+
+<script src="/js/gallery.js"></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script>
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
