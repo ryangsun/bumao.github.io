@@ -29,15 +29,15 @@
 <body>
   <header id="header" class="inner"><div class="alignleft">
   <!--<h1><a href="/">布猫</a></h1>-->
-  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px"/></a></h1>
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px" title="布猫"/></a></h1>
   <h2><a href="/"></a></h2>
 </div>
 <nav id="main-nav" class="alignright">
   <ul>
     
-      <li><a href="/">首页</a></li>
+      <li><a href="/">Home</a></li>
     
-      <li><a href="/archives">归档</a></li>
+      <li><a href="/archives">Archives</a></li>
     
   </ul>
   <div class="clearfix"></div>
@@ -46,6 +46,345 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+  <article id="post-Gitlab持续集成「PHP篇」" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:22:11.000Z"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>PHP项目不要要编辑，一个job可以搞定。</p>
+<p>发布节点用到的镜像<code>centos7-sshpass:1.0.0</code>详见 《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">deploy_dev:</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  script:</span><br><span class="line">    - ls ./ -lah</span><br><span class="line">    # 清除原有</span><br><span class="line">    - sshpass -p abc ssh -p 1234 -o StrictHostKeychecking=no root@localhost &quot;rm -fr /path/to/pub/*&quot;</span><br><span class="line">    # 拷贝文件包</span><br><span class="line">    - sshpass -p abc scp -o StrictHostKeyChecking=no -P 1234 -r ./* root@localhost:/path/to/pub/</span><br><span class="line">  tags:</span><br><span class="line">    - runner_test</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - dev_ver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">deploy_test:</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  script:</span><br><span class="line">    - ls ./ -lah</span><br><span class="line">    # 清除原有</span><br><span class="line">    - sshpass -p abc ssh -p 1234 -o StrictHostKeychecking=no root@localhost &quot;rm -fr /path/to/pub/*&quot;</span><br><span class="line">    # 拷贝文件包</span><br><span class="line">    - sshpass -p abc scp -o StrictHostKeyChecking=no -P 1234 -r ./* root@localhost:/path/to/pub/</span><br><span class="line">  tags:</span><br><span class="line">    - runner_test</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - dev_ver</span><br></pre></td></tr></table></figure>
+
+<p>如果：</p>
+<ul>
+<li>项目根目录下的 <code>dev_ver</code>被修改，则会触发 <code>deploy_dev:</code></li>
+<li>项目根目录下的 <code>test_ver</code>被修改，则会触发 <code>deploy_test:</code></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Gitlab持续集成「VUE篇」" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:22:11.000Z"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>java、vue等项目需要编译，所以，至少有两个job，一个是用 nodejs 镜像打dist包，一个是发布到对应位置。</p>
+<p>发布节点用到的镜像<code>centos7-sshpass:1.0.0</code>详见 《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">  - prepare</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">prepare:</span><br><span class="line">  stage: prepare</span><br><span class="line">  image: &#x27;node:16.14.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    key: &quot;$CI_COMMIT_REF_NAME&quot;</span><br><span class="line">    paths:</span><br><span class="line">      - node_modules/</span><br><span class="line">      - dist/</span><br><span class="line">  script:</span><br><span class="line">    - npm install</span><br><span class="line">    - npm run build:prod</span><br><span class="line">    - ls dist/ -lah</span><br><span class="line">  tags:</span><br><span class="line">    - runner_test</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - dev_ver</span><br><span class="line">      - test_ver</span><br><span class="line">deploy_dev:</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    key: &quot;$CI_COMMIT_REF_NAME&quot;</span><br><span class="line">    paths:</span><br><span class="line">      - dist/</span><br><span class="line">  script:</span><br><span class="line">    - ls dist/</span><br><span class="line">    # 清除原有</span><br><span class="line">    - sshpass -p abc ssh user@localhost -o StrictHostKeychecking=no &quot;rm -fr /path/to/pub/*&quot;</span><br><span class="line">    # 拷贝dist包</span><br><span class="line">    - sshpass -p abcc scp -o StrictHostKeyChecking=no -p -r dist/*.* user@localhost:/path/to/pub/</span><br><span class="line">  tags:</span><br><span class="line">    - runner_test</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - dev_ver</span><br><span class="line"></span><br><span class="line">deploy_test:</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    key: &quot;$CI_COMMIT_REF_NAME&quot;</span><br><span class="line">    paths:</span><br><span class="line">      - dist/</span><br><span class="line">  script:</span><br><span class="line">    - ls dist/</span><br><span class="line">    # 清除原有</span><br><span class="line">    - sshpass -p abc ssh user@localhost -o StrictHostKeychecking=no &quot;rm -fr /path/to/pub/*&quot;</span><br><span class="line">    # 拷贝dist包</span><br><span class="line">    - sshpass -p abcc scp -o StrictHostKeyChecking=no -p -r dist/*.* user@localhost:/path/to/pub/</span><br><span class="line">  tags:</span><br><span class="line">    - runner_test</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - test_ver</span><br></pre></td></tr></table></figure>
+
+<p>以上这个案例，定义了两个环节 <code>prepare</code>和<code>deploy</code>，有三个job：</p>
+<ul>
+<li><code>prepare:</code> 在dev_ver或test_ver被修改时会被触发</li>
+<li><code>deploy_dev:</code> 在dev_ver被修改时会被触发</li>
+<li><code>deploy_test:</code> 在test_ver被修改时会被触发</li>
+</ul>
+<p>那么，如果：</p>
+<ul>
+<li>项目根目录下的 <code>dev_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_dev:</code></li>
+<li>项目根目录下的 <code>test_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_test:</code></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Gitlab持续集成「springboot篇」" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:21:11.000Z"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>java、vue等项目需要编译，所以，至少有两个job，一个是用 maven镜像打jar包，一个是发布到对应位置。</p>
+<p>发布节点用到的镜像<code>centos7-sshpass:1.0.0</code>详见 《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"># 定义了两个流程</span><br><span class="line">stages:</span><br><span class="line">  - prepare</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">prepare:    # job的名称，可以随便起</span><br><span class="line">  stage: prepare    #这里要跟 stages 里面定义的保持一致</span><br><span class="line">  image: &#x27;maven:3.6.3-openjdk-8&#x27;    #用哪个镜像</span><br><span class="line">  cache:    # 缓存</span><br><span class="line">    policy: pull-push   #缓存方式 有 pull push pull-push</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/     #把target目录缓冲下来给下一步用</span><br><span class="line">  script:   #执行脚本</span><br><span class="line">    - mvn -v &amp;&amp; java -version</span><br><span class="line">    - mvn clean install</span><br><span class="line">  tags:</span><br><span class="line">    - java01    #对应的Runner的TAG，多个runner可以用同样的tag，到时候gitlab来分配具体用哪个runner来执行</span><br><span class="line">  only:</span><br><span class="line">    changes:    此步骤（job）通过文件修改来触发，下面定义的意思是，这两个文件其中一个有修改即触发执行</span><br><span class="line">      - dev_ver</span><br><span class="line">      - test_ver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">deploy_dev:     #往dev版发布</span><br><span class="line">  stage: deploy     #这里要跟 stages 里面定义的保持一致</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    policy: pull  #只读不写</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br><span class="line">  script:</span><br><span class="line">    - ls ./target/</span><br><span class="line">    # 拷贝jar包</span><br><span class="line">    - sshpass -p abcd scp -o StrictHostKeyChecking=no -P 1234 target/demo-0.0.1-SNAPSHOT.jar root@localhost:/app/demo-0.0.1-SNAPSHOT.jar</span><br><span class="line">    # 运行脚本</span><br><span class="line">    - sshpass -p abcd ssh -p 1234 root@localhost &quot;/app/jenkins_restart.sh demo-0.0.1-SNAPSHOT &gt;&gt; /app/jenkins_restart.log&quot;</span><br><span class="line">  tags:</span><br><span class="line">    - java01</span><br><span class="line">  only:</span><br><span class="line">    changes:    #这里仅针对dev_ver的修改触发</span><br><span class="line">      - dev_ver</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">deploy_test:    #往test版发包</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    policy: pull  #只读不写</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br><span class="line">  script:</span><br><span class="line">    - 。。。。。。</span><br><span class="line">  tags:</span><br><span class="line">    - java01</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - test_ver    #仅 文件 test_ver修改时候触发</span><br></pre></td></tr></table></figure>
+
+<p>以上这个案例，定义了两个环节 <code>prepare</code>和<code>deploy</code>，有三个job：</p>
+<ul>
+<li><code>prepare:</code> 在dev_ver或test_ver被修改时会被触发</li>
+<li><code>deploy_dev:</code> 在dev_ver被修改时会被触发</li>
+<li><code>deploy_test:</code> 在test_ver被修改时会被触发</li>
+</ul>
+<p>那么，如果：</p>
+<ul>
+<li>项目根目录下的 <code>dev_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_dev:</code></li>
+<li>项目根目录下的 <code>test_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_test:</code></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-为Gitlab持续集成打造一个部署用的docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:20:11.000Z"><a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>因为docker化部署的Runner，每一部都需要在容器中完成，针对没有完全使用k8等容器化运维的项目或者项目构建过程中需要做额外操作的ci/cd流程，使用官方容器就比较尴尬：</p>
+<ul>
+<li>打包好的目标文件，在maven、nodejs容器因为没有对应的命令，无法上传到指定位置</li>
+<li>ci/cd过程复杂，需要跟其他服务交互</li>
+</ul>
+<p>这种情况，咱们就得自己包docker image来给Runner用。</p>
+<h2 id="ceontos-sshpass"><a href="#ceontos-sshpass" class="headerlink" title="ceontos-sshpass"></a>ceontos-sshpass</h2><p>为了应对以上问题，笔者自己包了个发版的docker，地址在 <a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-sshpass">https://github.com/ryangsun/centos7-sshpass</a></p>
+<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ryangsun/centos7-sshpass.git</span><br><span class="line">chmod 700 build-image.sh</span><br><span class="line">./build-image.sh</span><br></pre></td></tr></table></figure>
+<p>默认创建的docker镜像为 <code>centos7-sshpass:1.0.0</code>，233M大小。</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Gitlab持续集成详细配置与工作原理" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-16T08:19:11.000Z"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">2022-03-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<h2 id="Gitlab-Runner-窍门"><a href="#Gitlab-Runner-窍门" class="headerlink" title="Gitlab Runner 窍门"></a>Gitlab Runner 窍门</h2><h3 id="解决gitlab-Runner-执行-job时反复拉取镜像的问题"><a href="#解决gitlab-Runner-执行-job时反复拉取镜像的问题" class="headerlink" title="解决gitlab Runner 执行 job时反复拉取镜像的问题"></a>解决gitlab Runner 执行 job时反复拉取镜像的问题</h3><p>编辑 <code>/etc/gitlab-runner/config.toml</code></p>
+<p>找到 shm_size = 0 段<br>添加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pull_policy = &quot;if-not-present&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="每次都要cache的内容可直接放到配置文件中"><a href="#每次都要cache的内容可直接放到配置文件中" class="headerlink" title="每次都要cache的内容可直接放到配置文件中"></a>每次都要cache的内容可直接放到配置文件中</h3><p>因为在docker方式中，每次job拉起镜像，都是崭新的，所以在构建Java项目时，<code>.m2</code>文件夹不存在，导致每次都需要重新下载全量jar包。<br>的确可以通过 gitlab-ci.yml中的cache段来解决，但每次写实在太麻烦，所以这个配置，也可以通过编辑 <code>/etc/gitlab-runner/config.toml</code>来解决。</p>
+<p>找到 <code>volumes = [&quot;/cache&quot;]</code>段，修改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volumes = [&quot;/cache&quot;,&quot;/dockerdata/gitlab-runner-java01/root/.m2:/root/.m2&quot;]</span><br></pre></td></tr></table></figure>
+<p>其中<code>&quot;/dockerdata/gitlab-runner-java01/root/.m2:/root/.m2&quot;</code> 与docker -v参数的传值类似，冒号前面是宿主机路径，后面是容器内路径。</p>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><ul>
+<li>不管我们用什么方式安装的gitlab，本身并不具备cicd功能，需要安装配套的<code>Runner</code>来具体做事。</li>
+<li>Docker方式部署的runner也不直接做打包发布的事情，而是通过定义不同环节用哪个docker容器来完成任务，这种方式下的runner，其实就是个管控器。</li>
+<li>何时触发构建动作、由谁执行构建动作、如何构建，需要在项目根目录下的 <code>gitlab-ci.yml</code> 来定义。</li>
+</ul>
+<h2 id="运行方式"><a href="#运行方式" class="headerlink" title="运行方式"></a>运行方式</h2><h3 id="触发"><a href="#触发" class="headerlink" title="触发"></a>触发</h3><p>gitlab的 pipeline既可以自动触发，也可以通过gitlab界面的cicd相关页面手动触发，这取决于在gitlab-ci.yml中如何配置。</p>
+<ul>
+<li>手动触发：<code>gitlab项目页面</code> -&gt; <code>左侧&quot;CI/CD&quot;</code> -&gt; <code>右侧按钮&quot;Run Pipeline&quot;</code></li>
+<li>自动触发：<code>gitlab-ci.yml</code> 中，每个job的 <code>only</code> 段，方式非常灵活，可按照 分支提交动作、文件修改动作 等等方式。</li>
+</ul>
+<h4 id="only案例，修改文件触发构建"><a href="#only案例，修改文件触发构建" class="headerlink" title="only案例，修改文件触发构建"></a>only案例，修改文件触发构建</h4><p>作为开发人员，最方便的莫过于修改本地文件然后提交了，以下方式，只需要在项目根目录创建两个文件<code>dev_ver</code>和<code>test_ver</code>，分别对应自动部署到开发版和测试版。<br>当gitlab获取到提交请求时，会自动扫描gitlab-ci.yml文件，如果对应的文件有修改，则进行对应的构建和发布操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">only:</span><br><span class="line">  changes:</span><br><span class="line">    - dev_ver</span><br><span class="line">    - test_ver</span><br></pre></td></tr></table></figure>
+<h4 id="only案例，手动触发"><a href="#only案例，手动触发" class="headerlink" title="only案例，手动触发"></a>only案例，手动触发</h4><p>如果想通在gitlab网页界面上操作，可采用这种变量传值方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">only:</span><br><span class="line">  variables:</span><br><span class="line">    - $RELEASE == &quot;dev&quot;</span><br><span class="line">    - $RELEASE == &quot;test&quot;</span><br></pre></td></tr></table></figure>
+<p>此时，<code>gitlab项目页面</code> -&gt; <code>左侧&quot;CI/CD&quot;</code> -&gt; <code>右侧按钮&quot;Run Pipeline&quot;</code>，在对应的页面中变量栏key输入 <code>RELEASE</code>,value栏输入<code>dev</code>，则会触发此规则。</p>
+<h3 id="阶段"><a href="#阶段" class="headerlink" title="阶段"></a>阶段</h3><p>以下信息描述了两个阶段 <code>prepare</code>和<code>deploy</code>阶段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stages:</span><br><span class="line">- prepare</span><br><span class="line">- deploy</span><br></pre></td></tr></table></figure>
+<p>当然，可以制定更多的阶段（Job），对于docker方式的Runner而言，每个阶段都会临时启动一个docker来执行对应的任务。</p>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p>在每个执行阶段中，我们需要定义：</p>
+<ul>
+<li>触发规则 only</li>
+<li>采用的镜像 image</li>
+<li>运行的脚本 script</li>
+<li>缓冲（为了下一环节能用到上一环节的作业成果） cache</li>
+</ul>
+<h4 id="执行案例"><a href="#执行案例" class="headerlink" title="执行案例"></a>执行案例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"># 定义了两个流程</span><br><span class="line">stages:</span><br><span class="line">  - prepare</span><br><span class="line">  - deploy</span><br><span class="line"></span><br><span class="line">prepare:    # job的名称，可以随便起</span><br><span class="line">  stage: prepare    #这里要跟 stages 里面定义的保持一致</span><br><span class="line">  image: &#x27;maven:3.6.3-openjdk-8&#x27;    #用哪个镜像</span><br><span class="line">  cache:    # 缓存</span><br><span class="line">    policy: pull-push   #缓存方式 有 pull push pull-push</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/     #把target目录缓冲下来给下一步用</span><br><span class="line">  script:   #执行脚本</span><br><span class="line">    - mvn -v &amp;&amp; java -version</span><br><span class="line">    - mvn clean install</span><br><span class="line">  tags:</span><br><span class="line">    - java01    #对应的Runner的TAG，多个runner可以用同样的tag，到时候gitlab来分配具体用哪个runner来执行</span><br><span class="line">  only:</span><br><span class="line">    changes:    此步骤（job）通过文件修改来触发，下面定义的意思是，这两个文件其中一个有修改即触发执行</span><br><span class="line">      - dev_ver</span><br><span class="line">      - test_ver</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">deploy_dev:     #往dev版发布</span><br><span class="line">  stage: deploy     #这里要跟 stages 里面定义的保持一致</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    policy: pull  #只读不写</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br><span class="line">  script:</span><br><span class="line">    - ls ./target/</span><br><span class="line">    # 拷贝jar包</span><br><span class="line">    - sshpass -p abcd scp -o StrictHostKeyChecking=no -P 1234 target/demo-0.0.1-SNAPSHOT.jar root@localhost:/app/demo-0.0.1-SNAPSHOT.jar</span><br><span class="line">    # 运行脚本</span><br><span class="line">    - sshpass -p abcd ssh -p 1234 root@localhost &quot;/app/jenkins_restart.sh demo-0.0.1-SNAPSHOT &gt;&gt; /app/jenkins_restart.log&quot;</span><br><span class="line">  tags:</span><br><span class="line">    - java01</span><br><span class="line">  only:</span><br><span class="line">    changes:    #这里仅针对dev_ver的修改触发</span><br><span class="line">      - dev_ver</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">deploy_test:    #往test版发包</span><br><span class="line">  stage: deploy</span><br><span class="line">  image: &#x27;centos7-sshpass:1.0.0&#x27;</span><br><span class="line">  cache:</span><br><span class="line">    policy: pull  #只读不写</span><br><span class="line">    key: $&#123;CI_COMMIT_REF_SLUG&#125;  #按照分支进行缓冲</span><br><span class="line">    paths:</span><br><span class="line">      - target/</span><br><span class="line">  script:</span><br><span class="line">    - 。。。。。。</span><br><span class="line">  tags:</span><br><span class="line">    - java01</span><br><span class="line">  only:</span><br><span class="line">    changes:</span><br><span class="line">      - test_ver    #仅 文件 test_ver修改时候触发</span><br></pre></td></tr></table></figure>
+
+<p>以上这个案例，定义了两个环节 <code>prepare</code>和<code>deploy</code>，有三个job：</p>
+<ul>
+<li><code>prepare:</code> 在dev_ver或test_ver被修改时会被触发</li>
+<li><code>deploy_dev:</code> 在dev_ver被修改时会被触发</li>
+<li><code>deploy_test:</code> 在test_ver被修改时会被触发</li>
+</ul>
+<p>那么，如果：</p>
+<ul>
+<li>项目根目录下的 <code>dev_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_dev:</code></li>
+<li>项目根目录下的 <code>test_ver</code>被修改，则会触发 <code>prepare:</code> 和 <code>deploy_test:</code></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article id="post-Gitlab持续集成Runner安装与配置" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time class="dt-published" datetime="2022-03-15T08:19:11.000Z"><a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">2022-03-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlib持续集成Runner的安装与配置</a></h1>
+  
+
+    </header>
+    <div class="e-content entry" itemprop="articleBody">
+      
+        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
+<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
+<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
+<p>首先，gitlab不做持续集成的事儿，只是发送指令和接收结果，实际做cicd的是Runner。安装和配置runner有集中方式，这里记录两种：</p>
+<h2 id="docker方式，非常轻便灵活"><a href="#docker方式，非常轻便灵活" class="headerlink" title="docker方式，非常轻便灵活"></a>docker方式，非常轻便灵活</h2><p>展开容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">--name gitlab-runner-docker \</span><br><span class="line">--restart always \</span><br><span class="line">-v /dockerdata/gitlab-runner-docker/etc/gitlab-runner:/etc/gitlab-runner \</span><br><span class="line">-v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">gitlab/gitlab-runner:latest</span><br></pre></td></tr></table></figure>
+<p>接入对应的gitlab</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it gitlab-runner-docker gitlab-runner register</span><br></pre></td></tr></table></figure>
+<p>接着会询问gitlab的地址、token ，这两个信息，可以在我们自己gitlab的 admin-&gt;概览-&gt;Runner中查询到。</p>
+<p>之后会询问 这个runner的名字和tag，tag这里要注意，会影响到实际cicd中的调用，因为跑自动化的时候是可以通过tag来指定runner的。</p>
+<p>交互式提问结束后，在gitlab的Runner页面，应该有对应的Runner注册上来了。</p>
+<h2 id="Centos中通过ssh连接"><a href="#Centos中通过ssh连接" class="headerlink" title="Centos中通过ssh连接"></a>Centos中通过ssh连接</h2><p>添加yum源</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<p>安装runner</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gitlab-ci-multi-runner</span><br></pre></td></tr></table></figure>
+<p>向GitLab-CI注册runner</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ci-multi-runner register</span><br></pre></td></tr></table></figure>
+<p>后面的步骤跟docker方式类似，gitlab的路径、token，连接方式选ssh，然后把本机的IP、ssh端口、账号密码录入进去。</p>
+<h2 id="配置过程（以docker方式为例）"><a href="#配置过程（以docker方式为例）" class="headerlink" title="配置过程（以docker方式为例）"></a>配置过程（以docker方式为例）</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># docker exec -it gitlab-runner-java01 gitlab-runner register</span><br><span class="line">Runtime platform                                    arch=amd64 os=linux pid=24 revision=5316d4ac version=14.6.0</span><br><span class="line">Running in system-mode.                            </span><br><span class="line">                                                   </span><br><span class="line">Enter the GitLab instance URL (for example, https://gitlab.com/):</span><br><span class="line">&lt;这里输入gitlab私仓的url&gt;</span><br><span class="line">Enter the registration token:</span><br><span class="line">&lt;这里输入runner的token&gt;</span><br><span class="line">Enter a description for the runner:</span><br><span class="line">[007fa02670d1]: &lt;给这个runner起个名字，会显示在gitlab中&gt;</span><br><span class="line">Enter tags for the runner (comma-separated):</span><br><span class="line">&lt;这里输入tag，跑任务的时候可以通过 tags 来指定&gt;</span><br><span class="line">Registering runner... succeeded                     runner=rANP_dLs</span><br><span class="line">Enter an executor: docker, docker-ssh, parallels, shell, virtualbox, docker+machine, custom, ssh, docker-ssh+machine, kubernetes:</span><br><span class="line">&lt;运行方式，这里写 docker&gt;</span><br><span class="line">Enter the default Docker image (for example, ruby:2.6):</span><br><span class="line">&lt;默认运行容器，如果在job中不指定容器，默认采用的运行容器，这里我添了 tico/docker&gt;</span><br><span class="line">Runner registered successfully. Feel free to start it, but if it&#x27;s running already the config should be automatically reloaded! </span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
   <article id="post-Harbor SSL避坑指南" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
@@ -62,7 +401,7 @@
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <p>Harbor的安装与配置请参考这里</p>
+        <p>Harbor的安装与配置请参考这里<a href="/2021/07/03/Harbor%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Harbor的安装与配置</a></p>
 <p>Docker默认情况下，push和pull对应的仓库均需要ssl加密，如果我们在内网采用Harbor作为私仓，有两种方案可以解决：</p>
 <ul>
 <li>Harbor开启ssl</li>
@@ -277,362 +616,11 @@
 
 
 
-  <article id="post-语雀javaSDK" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2021-07-02T07:19:11.000Z"><a href="/2021/07/02/%E8%AF%AD%E9%9B%80javaSDK/">2021-07-02</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2021/07/02/%E8%AF%AD%E9%9B%80javaSDK/">语雀javaSDK</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <p>支持语雀全部api接口，纯java编写，项目已上传至maven中央仓库，可直接maven引用。</p>
-<h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/ryangsun/yuque-java-sdk">https://github.com/ryangsun/yuque-java-sdk</a></li>
-</ul>
-<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
-    &lt;groupId&gt;com.bumao.models.yuquesdk&lt;&#x2F;groupId&gt;
-    &lt;artifactId&gt;yuquesdk&lt;&#x2F;artifactId&gt;
-    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
-&lt;&#x2F;dependency&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><pre class="line-numbers language-none"><code class="language-none">YuqueClient client &#x3D; new YuqueClient(&quot;yuque-token&quot;);
-
-System.out.println(&quot;--获取某个用户信息 by Id--&quot;);
-UserDetailSerializer userDetailSerializer &#x3D; client.getUserInfoById(&quot;1757692&quot;);
-System.out.println(userDetailSerializer);
-
-System.out.println(&quot;--获取某个用户信息 by Login--&quot;);
-UserDetailSerializer user1 &#x3D; client.getUserInfoByLogin(&quot;zhangxin_ux&quot;);
-System.out.println(user1);
-System.out.println(JSONObject.toJSONString(user1) );
-
-System.out.println(&quot;--获取当前用户信息--&quot;);
-UserDetailSerializer user2 &#x3D; client.getCurrUserInfo();
-System.out.println(user2);
-
-System.out.println(&quot;--获取某个用户的加入的组织列表 by Id--&quot;);
-List&lt;GroupSerializer&gt; groupList &#x3D; client.listJoinedGroupById(&quot;1757692&quot;);
-System.out.println(groupList);
-
-System.out.println(&quot;--获取某个用户的加入的组织列表 by Login--&quot;);
-List&lt;GroupSerializer&gt; groupList1 &#x3D; client.listJoinedGroupByLogin(&quot;u1486894&quot;);
-System.out.println(groupList1);
-
-System.out.println(&quot;--获取公开组织列表--&quot;);
-List&lt;GroupSerializer&gt; groupList3 &#x3D; client.listPublicGroup();
-System.out.println(groupList3);
-System.out.println(groupList3.size());
-
-List&lt;GroupSerializer&gt; groupList2 &#x3D; client.listPublicGroup(99);
-System.out.println(groupList2);
-System.out.println(groupList2.size());
-
-System.out.println(&quot;--获取单个组织的详细信息--&quot;);
-GroupDetailVo groupDetailVo &#x3D; client.getGroupInfoById(&quot;antv&quot;);
-System.out.println(groupDetailVo.getData());
-System.out.println(groupDetailVo.getAbilities());
-
-System.out.println(&quot;--创建组织--&quot;);
-GroupCreatePo createPo &#x3D; new GroupCreatePo();
-createPo.setName(&quot;firstGroup1&quot;);
-createPo.setLogin(&quot;firstGroup2&quot;);
-createPo.setDescription(&quot;firstGroup&quot;);
-try &#123;
-    GroupSerializer newGroup &#x3D; client.createGroup(createPo);
-    System.out.println(newGroup);
-&#125;catch (YuqueException e)&#123;
-    System.out.println(e);
-    System.out.println(&quot;创建组织错误：httpCode&#x3D;&quot;+e.getHttpCode()+&quot;,code&#x3D;&quot;+e.getOrigCode()+&quot;,message&#x3D;&quot;+e.getOrigMsg());
-&#125;
-
-System.out.println(&quot;--更新组织--&quot;);
-GroupCreatePo updatePo &#x3D; new GroupCreatePo();
-updatePo.setName(&quot;first被更新&quot;);
-updatePo.setLogin(&quot;firstGroup2&quot;);
-updatePo.setDescription(&quot;1234567890&quot;);
-try &#123;
-    GroupSerializer newGroup &#x3D; client.updateGroupById(&quot;21807875&quot;,updatePo);
-    System.out.println(newGroup);
-&#125;catch (YuqueException e)&#123;
-    System.out.println(e);
-    if(e.getHttpCode().equals(400)) &#123;
-System.out.println(&quot;更新组织错误：httpCode&#x3D;&quot; + e.getHttpCode() + &quot;,code&#x3D;&quot; + e.getOrigCode() + &quot;,message&#x3D;&quot; + e.getOrigMsg());
-    &#125;
-&#125;
-
-System.out.println(&quot;--删除组织--&quot;);
-try &#123;
-    client.deleteGroupById(&quot;21807875&quot;);
-&#125;catch (YuqueException e)&#123;
-    System.out.println(e);
-&#125;
-
-System.out.println(&quot;--获取组织成员信息--&quot;);
-List&lt;GroupUserSerializer&gt; groupUserSerializerList &#x3D; client.listGroupUserById(&quot;firstGroup&quot;);
-System.out.println(groupUserSerializerList);
-
-System.out.println(&quot;--增加或更新组织成员--&quot;);
-GroupUserSerializer UpgroupUserSerializer &#x3D; client.updateGroupUserbyId(&quot;firstGroup&quot;,&quot;zhangxin_ux&quot;,1);
-System.out.println(UpgroupUserSerializer);
-
-System.out.println(&quot;--删除组织成员--&quot;);
-GroupUserSerializer DelgroupUserSerializer &#x3D; client.deleteGroupUserbyId(&quot;firstGroup&quot;,&quot;zhangxin_ux&quot;);
-System.out.println(DelgroupUserSerializer);
-
-System.out.println(&quot;--获取某个用户的知识库列表 by Id--&quot;);
-List&lt;BookSerializer&gt; bookSerializerList &#x3D; client.listUserReposById(&quot;u1486894&quot;,&quot;all&quot;,0);
-System.out.println(bookSerializerList);
-
-System.out.println(&quot;--获取某个团队的知识库列表 by Id--&quot;);
-List&lt;BookSerializer&gt; groupbookSerializerList &#x3D; client.listGroupReposById(&quot;firstgroup&quot;,&quot;all&quot;,0);
-System.out.println(groupbookSerializerList);
-
-System.out.println(&quot;--往团队创建知识库 by Id--&quot;);
-RepoCreatePo createPo &#x3D; new RepoCreatePo();
-createPo.setDescription(&quot;介绍&quot;);
-createPo.setName(&quot;名称&quot;);
-createPo.setPublic_id(1);
-createPo.setSlug(&quot;abc&quot;);
-createPo.setType(&quot;Book&quot;);
-BookSerializer bookSerializer &#x3D; client.createGroupRepoById(&quot;firstgroup&quot;,createPo);
-System.out.println(bookSerializer);
-
-System.out.println(&quot;--往自己下面创建知识库 by Id--&quot;);
-RepoCreatePo cPo &#x3D; new RepoCreatePo();
-cPo.setDescription(&quot;介绍&quot;);
-cPo.setName(&quot;名称&quot;);
-cPo.setPublic_id(1);
-cPo.setSlug(&quot;abc&quot;);
-cPo.setType(&quot;Book&quot;);
-BookSerializer bookSerializer &#x3D; client.createUserRepoById(&quot;u1486894&quot;,cPo);
-System.out.println(bookSerializer);
-
-System.out.println(&quot;--获取知识库详情 by Id--&quot;);
-BookDetailVo bookDetailVo &#x3D; client.getRepoDetailById(&quot;20113349&quot;);
-System.out.println(bookDetailVo.getData());&#x2F;&#x2F;repo
-System.out.println(bookDetailVo.getAbilities());&#x2F;&#x2F;Abilities
-
-System.out.println(&quot;--更新知识库信息 by repoId--&quot;);
-RepoCreatePo upPo &#x3D; new RepoCreatePo();
-upPo.setDescription(&quot;介绍&quot;);
-upPo.setName(&quot;名称&quot;);
-upPo.setPublic_id(0);
-upPo.setSlug(&quot;abc&quot;);
-upPo.setType(&quot;Book&quot;);
-BookSerializer bookSerializerUp &#x3D; client.updateRepoById(&quot;20167466&quot;,upPo);
-System.out.println(bookSerializerUp);
-
-System.out.println(&quot;--删除知识库 by repoId--&quot;);
-BookSerializer bookSerializerDel &#x3D; client.deleteRepoById(&quot;u1486894&#x2F;slug&quot;);
-System.out.println(bookSerializerDel);
-
-System.out.println(&quot;--获取某仓库的目录 by nameSpace--&quot;);
-List&lt;TocSerializer&gt; tocSerializerList &#x3D; client.listTocByNameSpace(&quot;u1486894&#x2F;nn3k9e&quot;);
-System.out.println(tocSerializerList);
-
-System.out.println(&quot;--获取一个仓库的文档列表 by nameSpace--&quot;);
-List&lt;DocSerializer&gt; docSerializerList &#x3D; client.listDocByNameSpace(&quot;20113349&quot;);
-System.out.println(docSerializerList);
-
-System.out.println(&quot;--获取单篇文档的详细信息 by slug--&quot;);
-DocDetailVo docDetailVo &#x3D; client.getDocDetailBySlug(&quot;u1486894&#x2F;nn3k9e&quot;,&quot;hgg9lg&quot;);
-System.out.println(docDetailVo.getData());&#x2F;&#x2F;文章
-System.out.println(docDetailVo.getAbilities());&#x2F;&#x2F;Abilities
-
-System.out.println(&quot;--创建文档 by nameSpace--&quot;);
-DocCreatePo createPo &#x3D; new DocCreatePo();
-createPo.setTitle(&quot;helloword&quot;);
-createPo.setSlug(&quot;helloword1&quot;);
-createPo.setPublic_id(1);
-createPo.setFormat(&quot;markdown&quot;);
-createPo.setBody(&quot;#helloword&quot;);
-DocSerializer docSerializerCreate &#x3D; client.createDocByNameSpace(&quot;u1486894&#x2F;nn3k9e&quot;,createPo);
-System.out.println(docSerializerCreate);
-
-System.out.println(&quot;--更新文档 by nameSpace--&quot;);
-DocCreatePo upPo &#x3D; new DocCreatePo();
-upPo.setTitle(&quot;helloword&quot;);
-upPo.setSlug(&quot;helloword1&quot;);
-upPo.setPublic_id(1);
-upPo.setFormat(&quot;markdown&quot;);
-upPo.setBody(&quot;# helloword11111111&quot;);
-DocSerializer docSerializerUp &#x3D; client.updateDocByNameSpace(&quot;u1486894&#x2F;nn3k9e&quot;,&quot;46939700&quot;,upPo);
-System.out.println(docSerializerUp);
-
-System.out.println(&quot;--删除文档 by repoId--&quot;);
-DocSerializer docSerializerDel &#x3D; client.deleteDocByRepoId(&quot;20113349&quot;,&quot;46939326&quot;);
-System.out.println(docSerializerDel);
-
-System.out.println(&quot;--搜索--&quot;);
-SearchPo searchPo &#x3D; new SearchPo();
-searchPo.setType(&quot;doc&quot;);
-searchPo.setQ(&quot;世界上最好的语言&quot;);
-JSONObject obj &#x3D; client.listSearch(searchPo);
-System.out.println(obj);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-Table2Entry将建表语句转义为实体" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2021-07-02T07:19:11.000Z"><a href="/2021/07/02/Table2Entry%E5%B0%86%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5%E8%BD%AC%E4%B9%89%E4%B8%BA%E5%AE%9E%E4%BD%93/">2021-07-02</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2021/07/02/Table2Entry%E5%B0%86%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5%E8%BD%AC%E4%B9%89%E4%B8%BA%E5%AE%9E%E4%BD%93/">Table2Entry将建表语句转义为实体</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <p>Table2Entry可以方便的将mysql建表语句转化为实体对象，进而帮助你快速映射实体。</p>
-<h2 id="Table2Entry源码地址"><a href="#Table2Entry源码地址" class="headerlink" title="Table2Entry源码地址"></a>Table2Entry源码地址</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/ryangsun/table2entry">https://github.com/ryangsun/table2entry</a></li>
-</ul>
-<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><h3 id="正常使用"><a href="#正常使用" class="headerlink" title="正常使用"></a>正常使用</h3><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
-    &lt;groupId&gt;com.bumao.model&lt;&#x2F;groupId&gt;
-    &lt;artifactId&gt;table2entry&lt;&#x2F;artifactId&gt;
-    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
-&lt;&#x2F;dependency&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="包冲突的处理"><a href="#包冲突的处理" class="headerlink" title="包冲突的处理"></a>包冲突的处理</h3><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
-    &lt;groupId&gt;com.bumao.model&lt;&#x2F;groupId&gt;
-    &lt;artifactId&gt;table2entry&lt;&#x2F;artifactId&gt;
-    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
-    &lt;exclusions&gt;
-        &lt;!--druid--&gt;
-        &lt;exclusion&gt;
-            &lt;groupId&gt;com.alibaba&lt;&#x2F;groupId&gt;
-            &lt;artifactId&gt;druid&lt;&#x2F;artifactId&gt;
-        &lt;&#x2F;exclusion&gt;
-        &lt;!--lombok--&gt;
-        &lt;exclusion&gt;
-            &lt;groupId&gt;org.projectlombok&lt;&#x2F;groupId&gt;
-            &lt;artifactId&gt;lombok&lt;&#x2F;artifactId&gt;
-        &lt;&#x2F;exclusion&gt;
-        &lt;!--slf4j-api--&gt;
-        &lt;exclusion&gt;
-            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;
-            &lt;artifactId&gt;slf4j-api&lt;&#x2F;artifactId&gt;
-        &lt;&#x2F;exclusion&gt;
-    &lt;&#x2F;exclusions&gt;
-&lt;&#x2F;dependency&gt;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="Table2Entry的使用"><a href="#Table2Entry的使用" class="headerlink" title="Table2Entry的使用"></a>Table2Entry的使用</h2><pre class="line-numbers language-none"><code class="language-none">String sql &#x3D; &quot;CREATE TABLE &#96;card&#96; (\n&quot; +
-        &quot;  &#96;id&#96; bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#39;PK&#39;,\n&quot; +
-        &quot;  &#96;batch_id&#96; int(11) NOT NULL COMMENT &#39;所属批次ID&#39;,\n&quot; +
-        &quot;  &#96;denomination&#96; decimal(10,2) NOT NULL DEFAULT &#39;0.00&#39; COMMENT &#39;面额&#39;,\n&quot; +
-        &quot;  &#96;card_no&#96; varchar(20) NOT NULL COMMENT &#39;实体卡号&#39;,\n&quot; +
-        &quot;  &#96;card_pass&#96; varchar(20) NOT NULL COMMENT &#39;实体密码&#39;,\n&quot; +
-        &quot;  &#96;status&#96; tinyint(3) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;状态，0&#x3D;未核销 1&#x3D;已核销&#39;,\n&quot; +
-        &quot;  &#96;active_time&#96; datetime DEFAULT NULL COMMENT &#39;核销核销时间&#39;,\n&quot; +
-        &quot;  &#96;active_userid&#96; varchar(32) DEFAULT NULL COMMENT &#39;核销用户ID&#39;,\n&quot; +
-        &quot;  &#96;active_mobile&#96; varchar(20) DEFAULT NULL COMMENT &#39;核销时用户的手机号码&#39;,\n&quot; +
-        &quot;  &#96;create_time&#96; datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#39;创建时间&#39;,\n&quot; +
-        &quot;  &#96;stop_time&#96; datetime NOT NULL COMMENT &#39;结束核销时间&#39;,\n&quot; +
-        &quot;  &#96;active_openid&#96; varchar(64) DEFAULT NULL COMMENT &#39;用户openid&#39;,\n&quot; +
-        &quot;  PRIMARY KEY (&#96;id&#96;) USING BTREE,\n&quot; +
-        &quot;  KEY &#96;batch_id&#96; (&#96;batch_id&#96;) USING BTREE,\n&quot; +
-        &quot;  KEY &#96;status&#96; (&#96;status&#96;) USING BTREE\n&quot; +
-        &quot;) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4 COMMENT&#x3D;&#39;卡券批次表&#39;;&quot; +
-        &quot;select * from card;&quot;;
-ToEntry toEntry &#x3D; new ToEntry();
-List&lt;TableEntryVo&gt; tableEntryVos &#x3D; toEntry.getEntry(sql);
-log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntryVos));<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>可同时转义多条建表语句，请用“;”隔开。</li>
-<li>会忽略建表语句以外的sql。</li>
-</ul>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p><del>针对Mysql建表语句的转义</del></p>
-<p>针对Oracle建表语句的转义</p>
-<p>针对MsSQL建表语句的转义</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article id="post-当Mysql遇到SSL" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time class="dt-published" datetime="2021-05-17T07:19:11.000Z"><a href="/2021/05/17/%E5%BD%93Mysql%E9%81%87%E5%88%B0SSL/">2021-05-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2021/05/17/%E5%BD%93Mysql%E9%81%87%E5%88%B0SSL/">当Mysql遇到SSL</a></h1>
-  
-
-    </header>
-    <div class="e-content entry" itemprop="articleBody">
-      
-        <p>SpringBoot 连接提示 Communications link failure</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure</span><br><span class="line"></span><br><span class="line">The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.</span><br><span class="line">	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:174) ~[mysql-connector-java-8.0.20.jar:8.0.20]</span><br><span class="line">	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64) ~[mysql-connector-java-8.0.20.jar:8.0.20]</span><br><span class="line">	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:836) ~[mysql-connector-</span><br></pre></td></tr></table></figure>
-<p>具体的错误原因没找到，只从网上搜到了这个：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">原因是MySQL在高版本需要指明是否进行SSL连接</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Establishing SSL connection without server’s identity verification is not recommended. According to MySQL <span class="number">5.5</span><span class="number">.45</span>+, <span class="number">5.6</span><span class="number">.26</span>+ and <span class="number">5.7</span><span class="number">.6</span>+ requirements SSL connection must be established by <span class="keyword">default</span> <span class="keyword">if</span> explicit option isn’t set. For compliance with existing applications not using SSL the verifyServerCertificate property is set to ‘<span class="keyword">false</span>’. You need either to explicitly disable SSL by setting useSSL=<span class="keyword">false</span>, or set useSSL=<span class="keyword">true</span> and provide truststore <span class="keyword">for</span> server certificate verification.</span><br><span class="line">不建议在没有服务器身份验证的情况下建立SSL连接。根据MySQL <span class="number">5.5</span><span class="number">.45</span>+、<span class="number">5.6</span><span class="number">.26</span>+和<span class="number">5.7</span><span class="number">.6</span>+的要求，如果不设置显式选项，则必须建立默认的SSL连接。需要通过设置useSSL=<span class="keyword">false</span>来显式禁用SSL，或者设置useSSL=<span class="keyword">true</span>并为服务器证书验证提供信任存储。</span><br></pre></td></tr></table></figure>
-<p>用参数 useSSL=true 进行尝试，发现还是报一样的错误，当使用 useSSL=false 时，就可以进行连接了。也就是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:mysql://192.168.221.201:3306/jdbc?useSSL=false</span><br></pre></td></tr></table></figure>
-
-
-<p>不过为什么要这样连接，暂时没弄清楚，只知道时版本和兼容的原因。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
+  
+    <a href="/page/2/" class="alignright next">下一页</a>
   
   <div class="clearfix"></div>
 </nav></div></div>
@@ -650,7 +638,7 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/CI-CD/">CI/CD</a><small>4</small></li>
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>10</small></li>
   
     <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
   
@@ -669,13 +657,15 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   
     <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
   
-    <li><a href="/tags/ci-cd/">ci/cd</a><small>4</small></li>
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>10</small></li>
   
-    <li><a href="/tags/devops/">devops</a><small>4</small></li>
+    <li><a href="/tags/devops/">devops</a><small>10</small></li>
   
     <li><a href="/tags/dind/">dind</a><small>2</small></li>
   
-    <li><a href="/tags/docker/">docker</a><small>4</small></li>
+    <li><a href="/tags/docker/">docker</a><small>10</small></li>
+  
+    <li><a href="/tags/gitlab/">gitlab</a><small>6</small></li>
   
     <li><a href="/tags/harbor/">harbor</a><small>2</small></li>
   
@@ -685,7 +675,7 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   
     <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
   
-    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>4</small></li>
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>10</small></li>
   
     <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
   
@@ -699,13 +689,10 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2021 Ryan.G.Sun
+  &copy; 2022 Ryan.G.Sun
   
-  @
-  <a target="_blank" rel="noopener" href="https://bumao.com">bumao.com</a>
 </div>
-<div class="clearfix"></div>
-</footer>
+<div class="clearfix"></div></footer>
   
 <script src="/js/jquery-3.4.1.min.js"></script>
 

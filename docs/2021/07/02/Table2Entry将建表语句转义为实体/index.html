@@ -10,8 +10,7 @@
 Table2Entry源码地址
 https://github.com/ryangsun/table2entry
 
-包引用正常使用&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;c">
+包引用正常使用12345&amp;lt;dependency&amp;gt;    &amp;lt;groupId&amp;">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -36,15 +35,15 @@ https://github.com/ryangsun/table2entry
 <body>
   <header id="header" class="inner"><div class="alignleft">
   <!--<h1><a href="/">布猫</a></h1>-->
-  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px"/></a></h1>
+  <h1><a href="/"><img src="/img/logo_128.png" style="width:48px" title="布猫"/></a></h1>
   <h2><a href="/"></a></h2>
 </div>
 <nav id="main-nav" class="alignright">
   <ul>
     
-      <li><a href="/">首页</a></li>
+      <li><a href="/">Home</a></li>
     
-      <li><a href="/archives">归档</a></li>
+      <li><a href="/archives">Archives</a></li>
     
   </ul>
   <div class="clearfix"></div>
@@ -72,56 +71,10 @@ https://github.com/ryangsun/table2entry
 <h2 id="Table2Entry源码地址"><a href="#Table2Entry源码地址" class="headerlink" title="Table2Entry源码地址"></a>Table2Entry源码地址</h2><ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/ryangsun/table2entry">https://github.com/ryangsun/table2entry</a></li>
 </ul>
-<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><h3 id="正常使用"><a href="#正常使用" class="headerlink" title="正常使用"></a>正常使用</h3><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
-    &lt;groupId&gt;com.bumao.model&lt;&#x2F;groupId&gt;
-    &lt;artifactId&gt;table2entry&lt;&#x2F;artifactId&gt;
-    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
-&lt;&#x2F;dependency&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="包冲突的处理"><a href="#包冲突的处理" class="headerlink" title="包冲突的处理"></a>包冲突的处理</h3><pre class="line-numbers language-none"><code class="language-none">&lt;dependency&gt;
-    &lt;groupId&gt;com.bumao.model&lt;&#x2F;groupId&gt;
-    &lt;artifactId&gt;table2entry&lt;&#x2F;artifactId&gt;
-    &lt;version&gt;0.0.1&lt;&#x2F;version&gt;
-    &lt;exclusions&gt;
-        &lt;!--druid--&gt;
-        &lt;exclusion&gt;
-            &lt;groupId&gt;com.alibaba&lt;&#x2F;groupId&gt;
-            &lt;artifactId&gt;druid&lt;&#x2F;artifactId&gt;
-        &lt;&#x2F;exclusion&gt;
-        &lt;!--lombok--&gt;
-        &lt;exclusion&gt;
-            &lt;groupId&gt;org.projectlombok&lt;&#x2F;groupId&gt;
-            &lt;artifactId&gt;lombok&lt;&#x2F;artifactId&gt;
-        &lt;&#x2F;exclusion&gt;
-        &lt;!--slf4j-api--&gt;
-        &lt;exclusion&gt;
-            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;
-            &lt;artifactId&gt;slf4j-api&lt;&#x2F;artifactId&gt;
-        &lt;&#x2F;exclusion&gt;
-    &lt;&#x2F;exclusions&gt;
-&lt;&#x2F;dependency&gt;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="包引用"><a href="#包引用" class="headerlink" title="包引用"></a>包引用</h2><h3 id="正常使用"><a href="#正常使用" class="headerlink" title="正常使用"></a>正常使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.model&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;table2entry&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="包冲突的处理"><a href="#包冲突的处理" class="headerlink" title="包冲突的处理"></a>包冲突的处理</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;com.bumao.model&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;table2entry&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.0.1&lt;/version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;!--druid--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;druid&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">        &lt;!--lombok--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">        &lt;!--slf4j-api--&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</span><br><span class="line">        &lt;/exclusion&gt;</span><br><span class="line">    &lt;/exclusions&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="Table2Entry的使用"><a href="#Table2Entry的使用" class="headerlink" title="Table2Entry的使用"></a>Table2Entry的使用</h2><pre class="line-numbers language-none"><code class="language-none">String sql &#x3D; &quot;CREATE TABLE &#96;card&#96; (\n&quot; +
-        &quot;  &#96;id&#96; bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#39;PK&#39;,\n&quot; +
-        &quot;  &#96;batch_id&#96; int(11) NOT NULL COMMENT &#39;所属批次ID&#39;,\n&quot; +
-        &quot;  &#96;denomination&#96; decimal(10,2) NOT NULL DEFAULT &#39;0.00&#39; COMMENT &#39;面额&#39;,\n&quot; +
-        &quot;  &#96;card_no&#96; varchar(20) NOT NULL COMMENT &#39;实体卡号&#39;,\n&quot; +
-        &quot;  &#96;card_pass&#96; varchar(20) NOT NULL COMMENT &#39;实体密码&#39;,\n&quot; +
-        &quot;  &#96;status&#96; tinyint(3) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;状态，0&#x3D;未核销 1&#x3D;已核销&#39;,\n&quot; +
-        &quot;  &#96;active_time&#96; datetime DEFAULT NULL COMMENT &#39;核销核销时间&#39;,\n&quot; +
-        &quot;  &#96;active_userid&#96; varchar(32) DEFAULT NULL COMMENT &#39;核销用户ID&#39;,\n&quot; +
-        &quot;  &#96;active_mobile&#96; varchar(20) DEFAULT NULL COMMENT &#39;核销时用户的手机号码&#39;,\n&quot; +
-        &quot;  &#96;create_time&#96; datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#39;创建时间&#39;,\n&quot; +
-        &quot;  &#96;stop_time&#96; datetime NOT NULL COMMENT &#39;结束核销时间&#39;,\n&quot; +
-        &quot;  &#96;active_openid&#96; varchar(64) DEFAULT NULL COMMENT &#39;用户openid&#39;,\n&quot; +
-        &quot;  PRIMARY KEY (&#96;id&#96;) USING BTREE,\n&quot; +
-        &quot;  KEY &#96;batch_id&#96; (&#96;batch_id&#96;) USING BTREE,\n&quot; +
-        &quot;  KEY &#96;status&#96; (&#96;status&#96;) USING BTREE\n&quot; +
-        &quot;) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4 COMMENT&#x3D;&#39;卡券批次表&#39;;&quot; +
-        &quot;select * from card;&quot;;
-ToEntry toEntry &#x3D; new ToEntry();
-List&lt;TableEntryVo&gt; tableEntryVos &#x3D; toEntry.getEntry(sql);
-log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntryVos));<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Table2Entry的使用"><a href="#Table2Entry的使用" class="headerlink" title="Table2Entry的使用"></a>Table2Entry的使用</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">String sql = &quot;CREATE TABLE `card` (\n&quot; +</span><br><span class="line">        &quot;  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT &#x27;PK&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `batch_id` int(11) NOT NULL COMMENT &#x27;所属批次ID&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `denomination` decimal(10,2) NOT NULL DEFAULT &#x27;0.00&#x27; COMMENT &#x27;面额&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `card_no` varchar(20) NOT NULL COMMENT &#x27;实体卡号&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `card_pass` varchar(20) NOT NULL COMMENT &#x27;实体密码&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `status` tinyint(3) unsigned NOT NULL DEFAULT &#x27;0&#x27; COMMENT &#x27;状态，0=未核销 1=已核销&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_time` datetime DEFAULT NULL COMMENT &#x27;核销核销时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_userid` varchar(32) DEFAULT NULL COMMENT &#x27;核销用户ID&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_mobile` varchar(20) DEFAULT NULL COMMENT &#x27;核销时用户的手机号码&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#x27;创建时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `stop_time` datetime NOT NULL COMMENT &#x27;结束核销时间&#x27;,\n&quot; +</span><br><span class="line">        &quot;  `active_openid` varchar(64) DEFAULT NULL COMMENT &#x27;用户openid&#x27;,\n&quot; +</span><br><span class="line">        &quot;  PRIMARY KEY (`id`) USING BTREE,\n&quot; +</span><br><span class="line">        &quot;  KEY `batch_id` (`batch_id`) USING BTREE,\n&quot; +</span><br><span class="line">        &quot;  KEY `status` (`status`) USING BTREE\n&quot; +</span><br><span class="line">        &quot;) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=&#x27;卡券批次表&#x27;;&quot; +</span><br><span class="line">        &quot;select * from card;&quot;;</span><br><span class="line">ToEntry toEntry = new ToEntry();</span><br><span class="line">List&lt;TableEntryVo&gt; tableEntryVos = toEntry.getEntry(sql);</span><br><span class="line">log.info(&quot;tableEntryVos=&#123;&#125;&quot;, JSONArray.toJSON(tableEntryVos));</span><br></pre></td></tr></table></figure>
 <ul>
 <li>可同时转义多条建表语句，请用“;”隔开。</li>
 <li>会忽略建表语句以外的sql。</li>
@@ -169,7 +122,7 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/CI-CD/">CI/CD</a><small>4</small></li>
+    <li><a href="/categories/CI-CD/">CI/CD</a><small>10</small></li>
   
     <li><a href="/categories/Table2Entry/">Table2Entry</a><small>1</small></li>
   
@@ -188,13 +141,15 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   
     <li><a href="/tags/Table2Entry/">Table2Entry</a><small>1</small></li>
   
-    <li><a href="/tags/ci-cd/">ci/cd</a><small>4</small></li>
+    <li><a href="/tags/ci-cd/">ci/cd</a><small>10</small></li>
   
-    <li><a href="/tags/devops/">devops</a><small>4</small></li>
+    <li><a href="/tags/devops/">devops</a><small>10</small></li>
   
     <li><a href="/tags/dind/">dind</a><small>2</small></li>
   
-    <li><a href="/tags/docker/">docker</a><small>4</small></li>
+    <li><a href="/tags/docker/">docker</a><small>10</small></li>
+  
+    <li><a href="/tags/gitlab/">gitlab</a><small>6</small></li>
   
     <li><a href="/tags/harbor/">harbor</a><small>2</small></li>
   
@@ -204,7 +159,7 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   
     <li><a href="/tags/mysql/">mysql</a><small>1</small></li>
   
-    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>4</small></li>
+    <li><a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a><small>10</small></li>
   
     <li><a href="/tags/%E8%AF%AD%E9%9B%80/">语雀</a><small>1</small></li>
   
@@ -218,13 +173,10 @@ log.info(&quot;tableEntryVos&#x3D;&#123;&#125;&quot;, JSONArray.toJSON(tableEntr
   </div>
   <footer id="footer" class="inner"><div class="alignleft">
   
-  &copy; 2021 Ryan.G.Sun
+  &copy; 2022 Ryan.G.Sun
   
-  @
-  <a target="_blank" rel="noopener" href="https://bumao.com">bumao.com</a>
 </div>
-<div class="clearfix"></div>
-</footer>
+<div class="clearfix"></div></footer>
   
 <script src="/js/jquery-3.4.1.min.js"></script>
 
