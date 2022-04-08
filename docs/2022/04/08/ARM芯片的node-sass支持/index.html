@@ -3,20 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>为Gitlab持续集成打造一个部署用的docker | 布猫</title>
+  <title>ARM芯片的node-sass支持 | 布猫</title>
   <meta name="author" content="Ryan.G.Sun">
   
-  <meta name="description" content="《Gitlab持续集成Runner的安装与配置》
-《Gitlab持续集成详细配置与工作原理》
-《为Gitlab持续集成打造一个部署用的docker》
-《Gitlab持续集成「springboot篇」》
-《Gitlab持续集成「PHP篇」》
-《Gitlab持续集成「VUE篇」》
-因为docker化部署">
+  <meta name="description" content="用M1芯片的博友越来越多了，但node-sass，在高版本的nodejs上一直不能正常使用，下面来说说如何在ARM芯片上把node-sass跑起来。
+直奔主题： 自打M1问世，node-sass的作者就一直没有想着更好的支持arm，所以：降级！
+我是在mac M1芯片的docker中进行测试的，因为">
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="为Gitlab持续集成打造一个部署用的docker"/>
+  <meta property="og:title" content="ARM芯片的node-sass支持"/>
   <meta property="og:site_name" content="布猫"/>
 
   
@@ -53,37 +49,39 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-为Gitlab持续集成打造一个部署用的docker" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article id="post-ARM芯片的node-sass支持" class="h-entry post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   
   <div class="post-content">
     <header>
       
         <div class="icon"></div>
-        <time class="dt-published" datetime="2022-03-16T08:20:11.000Z"><a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">2022-03-16</a></time>
+        <time class="dt-published" datetime="2022-04-08T08:19:11.000Z"><a href="/2022/04/08/ARM%E8%8A%AF%E7%89%87%E7%9A%84node-sass%E6%94%AF%E6%8C%81/">2022-04-08</a></time>
       
       
   
-    <h1 class="p-name title" itemprop="headline name">为Gitlab持续集成打造一个部署用的docker</h1>
+    <h1 class="p-name title" itemprop="headline name">ARM芯片的node-sass支持</h1>
   
 
     </header>
     <div class="e-content entry" itemprop="articleBody">
       
-        <p>《<a href="/2022/03/15/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90Runner%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">Gitlab持续集成Runner的安装与配置</a>》</p>
-<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%AF%A6%E7%BB%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">Gitlab持续集成详细配置与工作原理</a>》</p>
-<p>《<a href="/2022/03/16/%E4%B8%BAGitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E6%89%93%E9%80%A0%E4%B8%80%E4%B8%AA%E9%83%A8%E7%BD%B2%E7%94%A8%E7%9A%84docker/">为Gitlab持续集成打造一个部署用的docker</a>》</p>
-<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8Cspringboot%E7%AF%87%E3%80%8D/">Gitlab持续集成「springboot篇」</a>》</p>
-<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CPHP%E7%AF%87%E3%80%8D/">Gitlab持续集成「PHP篇」</a>》</p>
-<p>《<a href="/2022/03/16/Gitlab%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E3%80%8CVUE%E7%AF%87%E3%80%8D/">Gitlab持续集成「VUE篇」</a>》</p>
-<p>因为docker化部署的Runner，每一部都需要在容器中完成，针对没有完全使用k8等容器化运维的项目或者项目构建过程中需要做额外操作的ci/cd流程，使用官方容器就比较尴尬：</p>
-<ul>
-<li>打包好的目标文件，在maven、nodejs容器因为没有对应的命令，无法上传到指定位置</li>
-<li>ci/cd过程复杂，需要跟其他服务交互</li>
-</ul>
-<p>这种情况，咱们就得自己包docker image来给Runner用。</p>
-<h2 id="ceontos-sshpass"><a href="#ceontos-sshpass" class="headerlink" title="ceontos-sshpass"></a>ceontos-sshpass</h2><p>为了应对以上问题，笔者自己包了个发版的docker，地址在 <a target="_blank" rel="noopener" href="https://github.com/ryangsun/centos7-sshpass">https://github.com/ryangsun/centos7-sshpass</a></p>
-<h3 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/ryangsun/centos7-sshpass.git</span><br><span class="line">chmod 700 build-image.sh</span><br><span class="line">./build-image.sh</span><br></pre></td></tr></table></figure>
-<p>默认创建的docker镜像为 <code>centos7-sshpass:1.0.0</code>，233M大小。</p>
+        <p>用M1芯片的博友越来越多了，但node-sass，在高版本的nodejs上一直不能正常使用，下面来说说如何在ARM芯片上把node-sass跑起来。</p>
+<p>直奔主题： 自打M1问世，node-sass的作者就一直没有想着更好的支持arm，所以：降级！</p>
+<p>我是在mac M1芯片的docker中进行测试的，因为宿主机的环境有些复杂。</p>
+<h3 id="开docker容器"><a href="#开docker容器" class="headerlink" title="开docker容器"></a>开docker容器</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -ti \</span><br><span class="line">-p 20081:8080 \</span><br><span class="line">-v /Users/ryan/dockerdata/uni_node14:/root/uni \</span><br><span class="line">--name uni_node14 centos:7 \</span><br><span class="line">bash</span><br></pre></td></tr></table></figure>
+
+<p>映射了8080端口和一个路径，这样方便文件操作和访问。</p>
+<h3 id="在docker中安装nodejs14"><a href="#在docker中安装nodejs14" class="headerlink" title="在docker中安装nodejs14"></a>在docker中安装nodejs14</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://rpm.nodesource.com/setup_14.x | bash -</span><br><span class="line">yum list nodejs --showduplicates | sort -r   #列出所有版本</span><br><span class="line"># 默认安装最新版本,安装指定版本</span><br><span class="line">yum install nodejs-14.16.0 -y</span><br></pre></td></tr></table></figure>
+
+<p>这里我用了nodejs 14.16.0</p>
+<h3 id="安装node-sass"><a href="#安装node-sass" class="headerlink" title="安装node-sass"></a>安装node-sass</h3><p><strong>因为sass的安装需要编译环境，所以先yum装对应的包</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc cmake automake autoconf libtool make gcc-c++ kernel-devel</span><br></pre></td></tr></table></figure>
+
+<p><strong>安装node-sass</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install node-sass@4.14.0 --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/</span><br></pre></td></tr></table></figure>
+
+<p>注意这里的版本 <code>4.14.0</code> 。</p>
+<p>至此，ARM上node-sass安装完毕。</p>
 
       
     </div>
@@ -92,13 +90,13 @@
         
   
   <div class="categories">
-    <a href="/categories/CI-CD/">CI/CD</a>
+    <a href="/categories/VUE/">VUE</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/docker/">docker</a>, <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/">持续集成</a>, <a href="/tags/ci-cd/">ci/cd</a>, <a href="/tags/devops/">devops</a>, <a href="/tags/gitlab/">gitlab</a>
+    <a href="/tags/ARM/">ARM</a>, <a href="/tags/M1/">M1</a>, <a href="/tags/node-sass/">node-sass</a>, <a href="/tags/vue/">vue</a>
   </div>
 
         
